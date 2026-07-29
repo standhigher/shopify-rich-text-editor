@@ -1,0 +1,29 @@
+{
+  "name": "@best-rich-editor/rich-text-server",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tiptap/core": "^3.0.0",
+    "@tiptap/extension-image": "^3.0.0",
+    "@tiptap/extension-link": "^3.0.0",
+    "@tiptap/extension-underline": "^3.0.0",
+    "@tiptap/html": "^3.0.0",
+    "@tiptap/starter-kit": "^3.0.0",
+    "sanitize-html": "^2.14.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/sanitize-html": "^2.13.0",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
+  }
+}

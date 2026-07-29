@@ -1,0 +1,89 @@
+@import "@shopify/polaris/build/esm/styles.css";
+@import "@best-rich-editor/rich-text-editor/styles.css";
+
+html,
+body {
+  margin: 0;
+  background: #f1f2f4;
+}
+
+body {
+  color: #202223;
+}
+
+.demo-shell {
+  min-height: 100vh;
+}
+
+.demo-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 20px 56px;
+}
+
+.demo-header {
+  margin-bottom: 24px;
+}
+
+.demo-title {
+  margin: 0 0 4px;
+  color: #202223;
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 28px;
+  letter-spacing: 0;
+}
+
+.demo-subtitle {
+  margin: 0;
+  color: #616161;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  gap: 16px;
+}
+
+.demo-output {
+  max-height: 360px;
+  overflow: auto;
+  border: 1px solid #dde0e4;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.demo-html-preview {
+  border: 1px solid #dde0e4;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 16px;
+}
+
+@media (max-width: 900px) {
+  .demo-page {
+    padding: 24px 16px 40px;
+  }
+
+  .demo-title {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .demo-subtitle {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
