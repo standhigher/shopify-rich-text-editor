@@ -1,4 +1,4 @@
-# Shopify App 快速接入 Best Rich Editor
+# Shopify App 快速接入 Shopify Rich Text Editor
 
 ## 一、接入目标
 
@@ -17,8 +17,8 @@
 ```json
 {
   "dependencies": {
-    "@best-rich-editor/rich-text-editor": "workspace:*",
-    "@best-rich-editor/rich-text-server": "workspace:*",
+    "@standhigher/shopify-rich-text-editor": "workspace:*",
+    "@standhigher/shopify-rich-text-server": "workspace:*",
     "@shopify/polaris": "^12.0.0",
     "@tiptap/core": "^3.0.0"
   }
@@ -33,7 +33,7 @@
 
 ```css
 @import "@shopify/polaris/build/esm/styles.css";
-@import "@best-rich-editor/rich-text-editor/styles.css";
+@import "@standhigher/shopify-rich-text-editor/styles.css";
 ```
 
 如果业务项目已经引入 Polaris CSS，只补充编辑器 CSS 即可。
@@ -59,7 +59,7 @@ export function RootProvider({ children }: { children: React.ReactNode }) {
 
 import { useState } from "react";
 import type { JSONContent } from "@tiptap/core";
-import { RichTextEditor } from "@best-rich-editor/rich-text-editor";
+import { RichTextEditor } from "@standhigher/shopify-rich-text-editor";
 
 const emptyContent: JSONContent = {
   type: "doc",
@@ -132,7 +132,7 @@ import {
   renderShopifyHtml,
   richTextJsonToPlainText,
   validateRichTextDocument
-} from "@best-rich-editor/rich-text-server";
+} from "@standhigher/shopify-rich-text-server";
 
 export async function PUT(request: Request) {
   const payload = await request.json();
@@ -172,7 +172,7 @@ import {
   renderShopifyHtml,
   richTextJsonToPlainText,
   validateRichTextDocument
-} from "@best-rich-editor/rich-text-server";
+} from "@standhigher/shopify-rich-text-server";
 
 export async function POST(request: Request) {
   const payload = await request.json();
@@ -202,7 +202,7 @@ await fetch("/api/rich-text/render-shopify", {
 禁止在 Client Component 中写：
 
 ```tsx
-import { renderShopifyHtml } from "@best-rich-editor/rich-text-server";
+import { renderShopifyHtml } from "@standhigher/shopify-rich-text-server";
 ```
 
 ## 九、上传图片到 Shopify
@@ -213,7 +213,7 @@ import { renderShopifyHtml } from "@best-rich-editor/rich-text-server";
 import {
   RichTextEditor,
   type ShopifyImageUploadResult
-} from "@best-rich-editor/rich-text-editor";
+} from "@standhigher/shopify-rich-text-editor";
 
 async function uploadToShopify(file: File): Promise<ShopifyImageUploadResult> {
   const formData = new FormData();
@@ -274,7 +274,7 @@ interface ShopifyImageUploadResult {
 ## 十、只读预览
 
 ```tsx
-import { RichTextEditor } from "@best-rich-editor/rich-text-editor";
+import { RichTextEditor } from "@standhigher/shopify-rich-text-editor";
 
 export function DescriptionPreview({ content }) {
   return <RichTextEditor value={content} readOnly />;
@@ -380,4 +380,3 @@ Shopify：
 - 图片 CDN 可访问
 - 链接安全属性正确
 - 发布失败保留草稿
-

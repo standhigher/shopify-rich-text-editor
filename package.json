@@ -1,11 +1,12 @@
 {
-  "name": "best-rich-editor",
+  "name": "shopify-rich-text-editor",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.15.0",
   "scripts": {
-    "dev": "pnpm --filter @best-rich-editor/demo dev",
+    "dev": "pnpm --filter @standhigher/shopify-rich-text-editor-demo dev",
     "build": "pnpm -r build",
+    "pack:dry-run": "pnpm --filter @standhigher/shopify-rich-text-editor exec npm pack --dry-run && pnpm --filter @standhigher/shopify-rich-text-server exec npm pack --dry-run",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck"
   },
@@ -15,4 +16,3 @@
     "vitest": "^3.0.8"
   }
 }
-

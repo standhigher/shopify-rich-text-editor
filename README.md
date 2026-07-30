@@ -1,4 +1,4 @@
-# Best Rich Editor
+# Shopify Rich Text Editor
 
 Shopify App 通用富文本编辑器，基于 Tiptap 3、Polaris React 和 Next.js App Router。
 

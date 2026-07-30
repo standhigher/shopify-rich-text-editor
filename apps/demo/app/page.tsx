@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppProvider, BlockStack, Card, InlineStack, Text } from "@shopify/polaris";
 import type { JSONContent } from "@tiptap/core";
-import { RichTextEditor, type ShopifyImageUploadResult } from "@best-rich-editor/rich-text-editor";
+import { RichTextEditor, type ShopifyImageUploadResult } from "@standhigher/shopify-rich-text-editor";
 
 interface RichTextDocument {
   version: number;
@@ -130,7 +130,7 @@ export default function DemoPage() {
       <main className="demo-shell">
         <div className="demo-page">
           <header className="demo-header">
-            <h1 className="demo-title">Best Rich Editor</h1>
+            <h1 className="demo-title">Shopify Rich Text Editor</h1>
             <p className="demo-subtitle">
               Reusable Shopify App rich text editor powered by Tiptap JSON and server-side
               channel adapters.

@@ -3,7 +3,7 @@ import {
   renderShopifyHtml,
   richTextJsonToPlainText,
   validateRichTextDocument
-} from "@best-rich-editor/rich-text-server";
+} from "@standhigher/shopify-rich-text-server";
 
 export async function POST(request: Request) {
   try {

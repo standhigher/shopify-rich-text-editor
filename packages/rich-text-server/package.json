@@ -1,13 +1,45 @@
 {
-  "name": "@best-rich-editor/rich-text-server",
+  "name": "@standhigher/shopify-rich-text-server",
   "version": "0.1.0",
   "type": "module",
-  "private": true,
+  "description": "Server-side validation, serialization, sanitization, and Shopify HTML output for Shopify Rich Text Editor.",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/standhigher/shopify-rich-text-editor.git",
+    "directory": "packages/rich-text-server"
+  },
+  "bugs": {
+    "url": "https://github.com/standhigher/shopify-rich-text-editor/issues"
+  },
+  "homepage": "https://github.com/standhigher/shopify-rich-text-editor#readme",
+  "keywords": [
+    "shopify",
+    "tiptap",
+    "rich-text",
+    "sanitize-html",
+    "server"
+  ],
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepack": "pnpm build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
