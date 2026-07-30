@@ -7,6 +7,11 @@
     "dev": "pnpm --filter @standhigher/shopify-rich-text-editor-demo dev",
     "build": "pnpm -r build",
     "pack:dry-run": "pnpm --filter @standhigher/shopify-rich-text-editor exec npm pack --dry-run && pnpm --filter @standhigher/shopify-rich-text-server exec npm pack --dry-run",
+    "release:check": "pnpm -r typecheck && pnpm test && pnpm build && pnpm pack:dry-run",
+    "release:major": "pnpm --filter @standhigher/shopify-rich-text-editor version major --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-server version major --no-git-tag-version",
+    "release:minor": "pnpm --filter @standhigher/shopify-rich-text-editor version minor --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-server version minor --no-git-tag-version",
+    "release:patch": "pnpm --filter @standhigher/shopify-rich-text-editor version patch --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-server version patch --no-git-tag-version",
+    "release:publish": "pnpm release:check && pnpm --filter @standhigher/shopify-rich-text-editor exec npm publish --access public --registry https://registry.npmjs.org/ && pnpm --filter @standhigher/shopify-rich-text-server exec npm publish --access public --registry https://registry.npmjs.org/",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck"
   },
