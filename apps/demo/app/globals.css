@@ -1,5 +1,5 @@
 @import "@shopify/polaris/build/esm/styles.css";
-@import "@best-rich-editor/rich-text-editor/styles.css";
+@import "@standhigher/shopify-rich-text-editor/styles.css";
 
 html,
 body {

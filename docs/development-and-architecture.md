@@ -1,8 +1,8 @@
-# Best Rich Editor 开发维护指南
+# Shopify Rich Text Editor 开发维护指南
 
 ## 项目定位
 
-Best Rich Editor 是给多个 Shopify App 复用的富文本编辑器。
+Shopify Rich Text Editor 是给多个 Shopify App 复用的富文本编辑器。
 
 核心技术：
 
@@ -86,6 +86,11 @@ pnpm test
 ```bash
 pnpm build
 ```
+
+发布准备和 npm 发布流程见：
+
+- [发布指南](release.md)
+- [更新日志](../CHANGELOG.md)
 
 ## 数据模型
 
@@ -296,4 +301,3 @@ pnpm -r typecheck
 pnpm test
 pnpm build
 ```
-

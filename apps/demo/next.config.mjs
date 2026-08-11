@@ -7,8 +7,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const nextConfig = {
   outputFileTracingRoot: path.join(__dirname, "../.."),
   transpilePackages: [
-    "@best-rich-editor/rich-text-editor",
-    "@best-rich-editor/rich-text-server"
+    "@standhigher/shopify-rich-text-editor",
+    "@standhigher/shopify-rich-text-server"
   ]
 };
 

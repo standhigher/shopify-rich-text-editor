@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Best Rich Editor Demo",
+  title: "Shopify Rich Text Editor Demo",
   description: "Shopify App rich text editor demo"
 };
 

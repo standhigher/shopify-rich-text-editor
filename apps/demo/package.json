@@ -1,6 +1,6 @@
 {
-  "name": "@best-rich-editor/demo",
-  "version": "0.1.0",
+  "name": "@standhigher/shopify-rich-text-editor-demo",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,8 +10,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@best-rich-editor/rich-text-editor": "workspace:*",
-    "@best-rich-editor/rich-text-server": "workspace:*",
+    "@standhigher/shopify-rich-text-editor": "workspace:*",
+    "@standhigher/shopify-rich-text-server": "workspace:*",
     "@shopify/polaris": "^12.0.0",
     "@tiptap/core": "^3.0.0",
     "next": "^15.2.3",

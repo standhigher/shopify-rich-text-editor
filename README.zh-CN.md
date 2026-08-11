@@ -6,36 +6,36 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Demo](https://img.shields.io/badge/demo-Next.js%20app-green)](apps/demo)
 
-Shopify Rich Text Editor is a reusable rich text editing toolkit for Shopify Apps, built with React, Tiptap 3, Shopify Polaris, and server-side Shopify-safe HTML rendering.
+Shopify Rich Text Editor 是面向 Shopify App 的通用富文本编辑器工具包，基于 React、Tiptap 3、Shopify Polaris，并提供服务端 Shopify 安全 HTML 渲染能力。
 
-[中文文档](README.zh-CN.md)
+[English README](README.md)
 
-## Links
+## 链接
 
-- npm editor package: [@standhigher/shopify-rich-text-editor](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
-- npm server package: [@standhigher/shopify-rich-text-server](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
-- GitHub: [standhigher/shopify-rich-text-editor](https://github.com/standhigher/shopify-rich-text-editor)
-- Demo app: [apps/demo](apps/demo)
-- API docs: [editor package README](packages/rich-text-editor/README.md), [server package README](packages/rich-text-server/README.md)
-- Usage docs: [Shopify App integration guide](docs/business-shopify-app-integration.md)
-- Maintenance docs: [development and architecture guide](docs/development-and-architecture.md)
-- Changelog: [CHANGELOG.md](CHANGELOG.md)
+- npm 前端包：[@standhigher/shopify-rich-text-editor](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
+- npm 服务端包：[@standhigher/shopify-rich-text-server](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
+- GitHub：[standhigher/shopify-rich-text-editor](https://github.com/standhigher/shopify-rich-text-editor)
+- Demo：[apps/demo](apps/demo)
+- API 文档：[前端包 README](packages/rich-text-editor/README.md)、[服务端包 README](packages/rich-text-server/README.md)
+- 接入文档：[Shopify App 快速接入指南](docs/business-shopify-app-integration.md)
+- 维护文档：[开发维护指南](docs/development-and-architecture.md)
+- 更新日志：[CHANGELOG.md](CHANGELOG.md)
 
-## Installation
+## 安装
 
 ```bash
 pnpm add @standhigher/shopify-rich-text-editor @standhigher/shopify-rich-text-server
 pnpm add @shopify/polaris react react-dom
 ```
 
-Import the editor CSS once in your app:
+全局引入样式：
 
 ```css
 @import "@shopify/polaris/build/esm/styles.css";
 @import "@standhigher/shopify-rich-text-editor/styles.css";
 ```
 
-## Basic Usage
+## 基础用法
 
 ```tsx
 "use client";
@@ -62,7 +62,7 @@ export function ProductDescriptionEditor() {
 }
 ```
 
-Render and sanitize Shopify HTML on the server:
+服务端渲染 Shopify HTML：
 
 ```ts
 import {
@@ -80,60 +80,60 @@ export async function POST(request: Request) {
 }
 ```
 
-## Feature Overview
+## 功能概览
 
-- React editor component for Shopify App admin interfaces.
-- Tiptap JSON as the editable source of truth.
-- Polaris-aligned toolbar styling and interaction states.
-- URL images and Shopify upload callback support.
-- Server-side validation, serialization, sanitization, and Shopify HTML output.
-- Next.js demo app with client editor and server render route.
+- 面向 Shopify App 管理后台的 React 富文本编辑器。
+- 使用 Tiptap JSON 作为唯一可编辑主数据。
+- 接近 Polaris 风格的工具栏交互和视觉状态。
+- 支持 URL 图片和上传到 Shopify 的回调。
+- 服务端提供 JSON 校验、HTML 生成、HTML 清洗和 Shopify HTML 输出。
+- 内置 Next.js demo，覆盖前端编辑和服务端渲染示例。
 
-## Compatibility
+## 兼容性
 
-| Package | Supported |
+| 依赖 | 支持范围 |
 | --- | --- |
 | React | `^18.3.1` |
 | React DOM | `^18.3.1` |
 | Shopify Polaris | `^12.0.0` |
 | Tiptap | `^3.0.0` |
 | TypeScript | `^5.8.2` |
-| Node.js | 18+ recommended |
+| Node.js | 建议 18+ |
 
-## Examples / Storybook / Demo
+## Demo / Storybook
 
-This repository currently ships a Next.js demo app instead of Storybook.
+当前仓库使用 Next.js demo 作为示例应用，暂未接入 Storybook。
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Open `http://localhost:3000`.
+访问 `http://localhost:3000`。
 
-The `build-storybook` script intentionally validates the demo build until Storybook is added:
+`build-storybook` 脚本在 Storybook 接入前用于校验 demo 构建：
 
 ```bash
 npm run build-storybook
 ```
 
-## Package Quality
+## 包质量
 
-Published packages include only:
+npm 包仅发布：
 
-- `dist` JavaScript output
-- TypeScript declaration files
-- package README
-- MIT license
+- `dist` JavaScript 产物
+- TypeScript 类型声明
+- 包 README
+- MIT LICENSE
 - editor CSS export
 
-Check package contents before publishing:
+发布前检查包内容：
 
 ```bash
 pnpm pack:dry-run
 ```
 
-## Local Development
+## 本地开发
 
 ```bash
 pnpm install
@@ -143,7 +143,7 @@ pnpm test
 pnpm build
 ```
 
-## Release Preparation
+## 发布准备
 
 ```bash
 npm run lint
@@ -154,4 +154,4 @@ npm run build-storybook
 pnpm pack:dry-run
 ```
 
-See [docs/release.md](docs/release.md) for npm registry, web auth, dry-run, tag, and dist-tag guidance.
+更多发布说明见 [docs/release.md](docs/release.md)。

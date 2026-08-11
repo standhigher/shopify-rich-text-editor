@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage documentation
+    url: https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/business-shopify-app-integration.md
+    about: Read the Shopify App integration guide before opening a usage question.
+  - name: Security report
+    url: https://github.com/standhigher/shopify-rich-text-editor/security/advisories/new
+    about: Please report vulnerabilities privately.

@@ -1,13 +1,58 @@
 {
-  "name": "@best-rich-editor/rich-text-server",
-  "version": "0.1.0",
+  "name": "@standhigher/shopify-rich-text-server",
+  "version": "0.2.0",
   "type": "module",
-  "private": true,
+  "description": "Server utilities for validating Tiptap JSON, sanitizing rich text HTML, and rendering Shopify-safe output.",
+  "license": "MIT",
+  "author": "Standhigher",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/standhigher/shopify-rich-text-editor.git",
+    "directory": "packages/rich-text-server"
+  },
+  "bugs": {
+    "url": "https://github.com/standhigher/shopify-rich-text-editor/issues"
+  },
+  "homepage": "https://github.com/standhigher/shopify-rich-text-editor#readme",
+  "keywords": [
+    "shopify",
+    "shopify-app",
+    "shopify-admin",
+    "tiptap",
+    "tiptap-3",
+    "rich-text",
+    "rich-text-editor",
+    "sanitize-html",
+    "server",
+    "typescript",
+    "node",
+    "html-sanitizer",
+    "content-rendering",
+    "ecommerce",
+    "product-description",
+    "json-to-html",
+    "shopify-html"
+  ],
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepack": "pnpm build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
