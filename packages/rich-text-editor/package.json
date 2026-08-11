@@ -1,9 +1,10 @@
 {
   "name": "@standhigher/shopify-rich-text-editor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "Reusable Shopify App rich text editor built with Tiptap and Polaris React.",
+  "description": "React rich text editor for Shopify Apps, built with Tiptap 3, Shopify Polaris, and Shopify image upload hooks.",
   "license": "MIT",
+  "author": "Standhigher",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -36,10 +37,23 @@
   "homepage": "https://github.com/standhigher/shopify-rich-text-editor#readme",
   "keywords": [
     "shopify",
+    "shopify-app",
+    "shopify-admin",
+    "shopify-polaris",
     "polaris",
     "tiptap",
+    "tiptap-3",
     "rich-text-editor",
-    "react"
+    "wysiwyg",
+    "react",
+    "react-component",
+    "nextjs",
+    "typescript",
+    "ecommerce",
+    "product-description",
+    "content-editing",
+    "json-editor",
+    "shopify-image-upload"
   ],
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.build.json && cp src/styles.css dist/styles.css",

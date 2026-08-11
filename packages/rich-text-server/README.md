@@ -1,30 +1,86 @@
 # @standhigher/shopify-rich-text-server
 
-Server-side helpers for validating Shopify Rich Text Editor JSON, rendering HTML, sanitizing HTML, and producing Shopify-safe output.
+[![npm version](https://img.shields.io/npm/v/@standhigher/shopify-rich-text-server)](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
+[![npm downloads](https://img.shields.io/npm/dm/@standhigher/shopify-rich-text-server)](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
+[![CI](https://github.com/standhigher/shopify-rich-text-editor/actions/workflows/ci.yml/badge.svg)](https://github.com/standhigher/shopify-rich-text-editor/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/standhigher/shopify-rich-text-editor/blob/main/LICENSE)
 
-## Install
+Server utilities for validating Tiptap JSON, sanitizing rich text HTML, and rendering Shopify-safe output.
+
+## Links
+
+- npm: [@standhigher/shopify-rich-text-server](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
+- GitHub: [standhigher/shopify-rich-text-editor](https://github.com/standhigher/shopify-rich-text-editor)
+- Demo: [apps/demo](https://github.com/standhigher/shopify-rich-text-editor/tree/main/apps/demo)
+- Usage docs: [Shopify App integration guide](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/business-shopify-app-integration.md)
+- Editor package: [@standhigher/shopify-rich-text-editor](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
+- Changelog: [CHANGELOG.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/CHANGELOG.md)
+
+## Installation
 
 ```bash
 pnpm add @standhigher/shopify-rich-text-server
 ```
 
-Use it in your Shopify App backend or server route:
+## Basic Usage
 
 ```ts
 import {
-  parseRichTextDocument,
   renderShopifyHtml,
+  richTextJsonToPlainText,
+  validateRichTextDocument
 } from "@standhigher/shopify-rich-text-server";
 
 export async function renderDescription(input: unknown) {
-  const document = parseRichTextDocument(input);
+  const document = validateRichTextDocument(input);
 
-  return renderShopifyHtml(document);
+  return {
+    html: renderShopifyHtml(document),
+    plainText: richTextJsonToPlainText(document.content)
+  };
 }
 ```
 
-## Notes
+## Feature Overview
 
-- Validate untrusted JSON before rendering.
-- Store editor JSON as the editable source of truth.
-- Render and sanitize HTML on the server before writing to Shopify.
+- Validate the persisted rich text document envelope.
+- Render Tiptap JSON to HTML.
+- Extract plain text for indexing or previews.
+- Sanitize HTML with an allowlist.
+- Remove editor-only metadata before writing HTML to Shopify.
+
+## Compatibility
+
+| Package | Supported |
+| --- | --- |
+| Node.js | 18+ recommended |
+| Tiptap | `^3.0.0` |
+| TypeScript | `^5.8.2` |
+
+## Package Quality
+
+The published package includes `dist`, TypeScript declarations, README, and MIT license only.
+
+## Maintenance
+
+This package is maintained by Standhigher for Shopify App rich text workflows. Please report bugs and feature requests on GitHub Issues.
+
+## Local Development
+
+```bash
+pnpm install
+pnpm -r typecheck
+pnpm test
+pnpm build
+```
+
+## Release Preparation
+
+```bash
+npm run lint
+npm run test
+npm run typecheck
+npm run build
+npm run build-storybook
+pnpm pack:dry-run
+```

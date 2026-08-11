@@ -87,6 +87,11 @@ pnpm test
 pnpm build
 ```
 
+发布准备和 npm 发布流程见：
+
+- [发布指南](release.md)
+- [更新日志](../CHANGELOG.md)
+
 ## 数据模型
 
 ```ts

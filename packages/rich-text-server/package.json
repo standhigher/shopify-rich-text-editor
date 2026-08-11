@@ -1,9 +1,10 @@
 {
   "name": "@standhigher/shopify-rich-text-server",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "Server-side validation, serialization, sanitization, and Shopify HTML output for Shopify Rich Text Editor.",
+  "description": "Server utilities for validating Tiptap JSON, sanitizing rich text HTML, and rendering Shopify-safe output.",
   "license": "MIT",
+  "author": "Standhigher",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -32,10 +33,22 @@
   "homepage": "https://github.com/standhigher/shopify-rich-text-editor#readme",
   "keywords": [
     "shopify",
+    "shopify-app",
+    "shopify-admin",
     "tiptap",
+    "tiptap-3",
     "rich-text",
+    "rich-text-editor",
     "sanitize-html",
-    "server"
+    "server",
+    "typescript",
+    "node",
+    "html-sanitizer",
+    "content-rendering",
+    "ecommerce",
+    "product-description",
+    "json-to-html",
+    "shopify-html"
   ],
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
