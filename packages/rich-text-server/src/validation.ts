@@ -1,7 +1,11 @@
 import type { JSONContent } from "@tiptap/core";
 import { z } from "zod";
 
-import { runRichTextMigrations, type RichTextDocument as CoreRichTextDocument } from "@standhigher/shopify-rich-text-core";
+import {
+  RICH_TEXT_PROTOCOL_VERSION,
+  runRichTextMigrations,
+  type RichTextDocument as CoreRichTextDocument
+} from "@standhigher/shopify-rich-text-core";
 import type { RichTextDocument, RichTextValidationLimits } from "./types";
 import type { ResourceType } from "@standhigher/shopify-rich-text-core";
 import { RichTextValidationError } from "./errors";
@@ -50,6 +54,15 @@ export function prepareRichTextDocument(
   registry: ServerExtensionRegistry = createServerExtensionRegistry()
 ): RichTextDocument {
   const envelope = parseRichTextDocumentEnvelope(value);
+
+  if (envelope.version > RICH_TEXT_PROTOCOL_VERSION) {
+    throw new RichTextValidationError(
+      "INVALID_DOCUMENT",
+      `Unsupported rich text protocol version: ${envelope.version}`,
+      "version"
+    );
+  }
+
   const migration = runRichTextMigrations(envelope as CoreRichTextDocument);
 
   if (!migration.ok) {

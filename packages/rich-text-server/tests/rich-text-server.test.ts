@@ -61,6 +61,21 @@ describe("rich text server", () => {
     ).toThrow(/Invalid rich text document/);
   });
 
+  it("rejects unsupported future protocol versions", () => {
+    expect(() =>
+      validateRichTextDocument({
+        version: 999,
+        schemaVersion: "2026-07",
+        content: { type: "doc", content: [{ type: "paragraph" }] }
+      })
+    ).toThrowError(
+      expect.objectContaining({
+        name: "RichTextValidationError",
+        code: "INVALID_DOCUMENT"
+      })
+    );
+  });
+
   it("rejects unknown node types with a structured validation error", () => {
     expect(() =>
       validateRichTextDocument({
