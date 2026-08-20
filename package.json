@@ -30,7 +30,9 @@
   "scripts": {
     "dev": "pnpm --filter @standhigher/shopify-rich-text-editor-demo dev",
     "build": "pnpm -r build",
-    "build-storybook": "pnpm --filter @standhigher/shopify-rich-text-editor-demo build",
+    "build-demo": "pnpm --filter @standhigher/shopify-rich-text-editor-demo build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "consumer:check": "node scripts/check-consumer-imports.mjs",
     "lint": "pnpm -r typecheck",
     "pack:dry-run": "NPM_CONFIG_CACHE=/tmp/best-rich-text-npm-cache pnpm --filter @standhigher/shopify-rich-text-core exec npm pack --dry-run && NPM_CONFIG_CACHE=/tmp/best-rich-text-npm-cache pnpm --filter @standhigher/shopify-rich-text-editor exec npm pack --dry-run && NPM_CONFIG_CACHE=/tmp/best-rich-text-npm-cache pnpm --filter @standhigher/shopify-rich-text-server exec npm pack --dry-run",
@@ -45,7 +47,14 @@
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
+    "@shopify/polaris": "^12.27.0",
+    "@storybook/addon-a11y": "10.5.9",
+    "@storybook/addon-docs": "10.5.9",
+    "@storybook/react-vite": "10.5.9",
     "@types/node": "^22.13.10",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "storybook": "10.5.9",
     "typescript": "^5.8.2",
     "vitest": "^3.0.8"
   }

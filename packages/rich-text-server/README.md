@@ -3,7 +3,8 @@
 [![npm version](https://img.shields.io/npm/v/@standhigher/shopify-rich-text-server)](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
 [![npm downloads](https://img.shields.io/npm/dm/@standhigher/shopify-rich-text-server)](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
 [![CI](https://github.com/standhigher/shopify-rich-text-editor/actions/workflows/ci.yml/badge.svg)](https://github.com/standhigher/shopify-rich-text-editor/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/standhigher/shopify-rich-text-editor/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/standhigher/shopify-rich-text-editor/blob/master/LICENSE)
+[![Storybook](https://img.shields.io/badge/storybook-GitHub%20Pages-ff4785)](https://standhigher.github.io/shopify-rich-text-editor/)
 
 Server utilities for validating Tiptap JSON, sanitizing rich text HTML, and rendering Shopify-safe output.
 
@@ -11,11 +12,12 @@ Server utilities for validating Tiptap JSON, sanitizing rich text HTML, and rend
 
 - npm: [@standhigher/shopify-rich-text-server](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
 - GitHub: [standhigher/shopify-rich-text-editor](https://github.com/standhigher/shopify-rich-text-editor)
-- Demo: [apps/demo](https://github.com/standhigher/shopify-rich-text-editor/tree/main/apps/demo)
-- Usage docs: [Shopify App integration guide](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/business-shopify-app-integration.md)
+- Storybook: [GitHub Pages component showcase](https://standhigher.github.io/shopify-rich-text-editor/)
+- Local demo: [apps/demo](https://github.com/standhigher/shopify-rich-text-editor/tree/master/apps/demo)
+- Usage docs: [Shopify App integration guide](https://github.com/standhigher/shopify-rich-text-editor/blob/master/docs/business-shopify-app-integration.md)
 - Editor package: [@standhigher/shopify-rich-text-editor](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
-- Changelog: [CHANGELOG.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/CHANGELOG.md)
-- Compatibility matrix: [docs/api-compatibility-matrix.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/api-compatibility-matrix.md)
+- Changelog: [CHANGELOG.md](https://github.com/standhigher/shopify-rich-text-editor/blob/master/CHANGELOG.md)
+- Compatibility matrix: [docs/api-compatibility-matrix.md](https://github.com/standhigher/shopify-rich-text-editor/blob/master/docs/api-compatibility-matrix.md)
 
 ## Installation
 

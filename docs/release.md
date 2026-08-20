@@ -3,6 +3,7 @@
 This guide covers preparing and publishing:
 
 - `@standhigher/shopify-rich-text-editor`
+- `@standhigher/shopify-rich-text-core`
 - `@standhigher/shopify-rich-text-server`
 
 ## Registry
@@ -99,9 +100,9 @@ npm publish --access public --tag next --registry https://registry.npmjs.org/
 Move tags explicitly when needed:
 
 ```bash
-npm dist-tag add @standhigher/shopify-rich-text-core@0.4.0 latest
-npm dist-tag add @standhigher/shopify-rich-text-editor@0.4.0 latest
-npm dist-tag add @standhigher/shopify-rich-text-server@0.4.0 latest
+npm dist-tag add @standhigher/shopify-rich-text-core@1.0.0 latest
+npm dist-tag add @standhigher/shopify-rich-text-editor@1.0.0 latest
+npm dist-tag add @standhigher/shopify-rich-text-server@1.0.0 latest
 ```
 
 ## Publish
@@ -113,14 +114,15 @@ pnpm release:publish
 For a 1.0 candidate, publish a prerelease with `--tag next`, verify clean-project
 installation and imports, then move `latest` only after the merged main branch
 passes `pnpm release:check`. Never publish directly from an unmerged feature
-branch.
+branch. `pnpm release:publish` is reserved for the final stable `latest`
+publication, not candidate releases.
 
 ## Git Tags
 
 After a successful publish:
 
 ```bash
-git tag v0.4.0
+git tag v1.0.0
 git push origin <branch> --tags
 ```
 
@@ -128,7 +130,7 @@ git push origin <branch> --tags
 
 - [ ] Working tree is clean except intended release changes.
 - [ ] npm latest versions checked.
-- [ ] Versions are bumped in both package manifests.
+- [ ] Versions are bumped in all three public package manifests.
 - [ ] Changelog is updated.
 - [ ] README and package README files are updated.
 - [ ] `npm run lint` passes.
@@ -136,9 +138,9 @@ git push origin <branch> --tags
 - [ ] `npm run typecheck` passes.
 - [ ] `npm run build` passes.
 - [ ] `npm run build-storybook` passes.
-- [ ] `npm pack --dry-run --registry=https://registry.npmjs.org/` inspected for both published packages.
+- [ ] `npm pack --dry-run --registry=https://registry.npmjs.org/` inspected for all three published packages.
 - [ ] `pnpm pack:check` confirms no tests, fixtures, demos, source, credentials, or Storybook files are included.
-- [ ] A clean temporary project imports the Editor root, Editor CSS, Core root, and Server root.
+- [ ] A clean temporary project imports Core root, Core experimental, Editor root, Editor experimental, Editor CSS, and Server root.
 - [ ] Migration failure rollback preserves original JSON and cached HTML.
 
 ## Rollback

@@ -3,8 +3,8 @@
 [![npm version](https://img.shields.io/npm/v/@standhigher/shopify-rich-text-editor)](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
 [![npm downloads](https://img.shields.io/npm/dm/@standhigher/shopify-rich-text-editor)](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
 [![CI](https://github.com/standhigher/shopify-rich-text-editor/actions/workflows/ci.yml/badge.svg)](https://github.com/standhigher/shopify-rich-text-editor/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/standhigher/shopify-rich-text-editor/blob/main/LICENSE)
-[![Demo](https://img.shields.io/badge/demo-Next.js%20app-green)](https://github.com/standhigher/shopify-rich-text-editor/tree/main/apps/demo)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/standhigher/shopify-rich-text-editor/blob/master/LICENSE)
+[![Storybook](https://img.shields.io/badge/storybook-GitHub%20Pages-ff4785)](https://standhigher.github.io/shopify-rich-text-editor/)
 
 React rich text editor for Shopify Apps, built with Tiptap 3, Shopify Polaris, and Shopify image upload hooks.
 
@@ -12,11 +12,12 @@ React rich text editor for Shopify Apps, built with Tiptap 3, Shopify Polaris, a
 
 - npm: [@standhigher/shopify-rich-text-editor](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
 - GitHub: [standhigher/shopify-rich-text-editor](https://github.com/standhigher/shopify-rich-text-editor)
-- Demo: [apps/demo](https://github.com/standhigher/shopify-rich-text-editor/tree/main/apps/demo)
-- Usage docs: [Shopify App integration guide](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/business-shopify-app-integration.md)
-- API docs: [server package README](https://github.com/standhigher/shopify-rich-text-editor/blob/main/packages/rich-text-server/README.md)
-- Changelog: [CHANGELOG.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/CHANGELOG.md)
-- Compatibility matrix: [docs/api-compatibility-matrix.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/api-compatibility-matrix.md)
+- Storybook: [GitHub Pages component showcase](https://standhigher.github.io/shopify-rich-text-editor/)
+- Local demo: [apps/demo](https://github.com/standhigher/shopify-rich-text-editor/tree/master/apps/demo)
+- Usage docs: [Shopify App integration guide](https://github.com/standhigher/shopify-rich-text-editor/blob/master/docs/business-shopify-app-integration.md)
+- API docs: [server package README](https://github.com/standhigher/shopify-rich-text-editor/blob/master/packages/rich-text-server/README.md)
+- Changelog: [CHANGELOG.md](https://github.com/standhigher/shopify-rich-text-editor/blob/master/CHANGELOG.md)
+- Compatibility matrix: [docs/api-compatibility-matrix.md](https://github.com/standhigher/shopify-rich-text-editor/blob/master/docs/api-compatibility-matrix.md)
 
 ## Installation
 
@@ -209,6 +210,7 @@ This package is maintained by Standhigher for Shopify App rich text workflows. P
 ```bash
 pnpm install
 pnpm dev
+pnpm storybook
 pnpm -r typecheck
 pnpm test
 pnpm build

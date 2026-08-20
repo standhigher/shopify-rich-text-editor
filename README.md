@@ -4,7 +4,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/@standhigher/shopify-rich-text-editor)](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
 [![CI](https://github.com/standhigher/shopify-rich-text-editor/actions/workflows/ci.yml/badge.svg)](https://github.com/standhigher/shopify-rich-text-editor/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Demo](https://img.shields.io/badge/demo-Next.js%20app-green)](apps/demo)
+[![Storybook](https://img.shields.io/badge/storybook-GitHub%20Pages-ff4785)](https://standhigher.github.io/shopify-rich-text-editor/)
 
 Shopify Rich Text Editor is a reusable rich text editing toolkit for Shopify Apps, built with React, Tiptap 3, Shopify Polaris, and server-side Shopify-safe HTML rendering.
 
@@ -13,9 +13,11 @@ Shopify Rich Text Editor is a reusable rich text editing toolkit for Shopify App
 ## Links
 
 - npm editor package: [@standhigher/shopify-rich-text-editor](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
+- npm core package: [@standhigher/shopify-rich-text-core](https://www.npmjs.com/package/@standhigher/shopify-rich-text-core)
 - npm server package: [@standhigher/shopify-rich-text-server](https://www.npmjs.com/package/@standhigher/shopify-rich-text-server)
 - GitHub: [standhigher/shopify-rich-text-editor](https://github.com/standhigher/shopify-rich-text-editor)
-- Demo app: [apps/demo](apps/demo)
+- Online Storybook: [GitHub Pages component showcase](https://standhigher.github.io/shopify-rich-text-editor/)
+- Local demo app: [apps/demo](apps/demo)
 - API docs: [editor package README](packages/rich-text-editor/README.md), [server package README](packages/rich-text-server/README.md)
 - Usage docs: [Shopify App integration guide](docs/business-shopify-app-integration.md)
 - Maintenance docs: [development and architecture guide](docs/development-and-architecture.md)
@@ -27,7 +29,7 @@ Shopify Rich Text Editor is a reusable rich text editing toolkit for Shopify App
 ## Installation
 
 ```bash
-pnpm add @standhigher/shopify-rich-text-editor @standhigher/shopify-rich-text-server
+pnpm add @standhigher/shopify-rich-text-core @standhigher/shopify-rich-text-editor @standhigher/shopify-rich-text-server
 pnpm add @shopify/polaris react react-dom
 ```
 
@@ -115,7 +117,20 @@ export async function POST(request: Request) {
 
 ## Examples / Storybook / Demo
 
-This repository currently ships a Next.js demo app instead of Storybook.
+Use Storybook for the online component showcase:
+
+```bash
+pnpm install
+pnpm storybook
+```
+
+Build the static Storybook site for GitHub Pages:
+
+```bash
+pnpm build-storybook
+```
+
+Use the Next.js demo for local full-stack rendering with the server API route:
 
 ```bash
 pnpm install
@@ -124,10 +139,8 @@ pnpm dev
 
 Open `http://localhost:3000`.
 
-The `build-storybook` script intentionally validates the demo build until Storybook is added:
-
 ```bash
-npm run build-storybook
+pnpm build-demo
 ```
 
 ## Package Quality
