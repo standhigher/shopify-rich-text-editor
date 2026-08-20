@@ -1,5 +1,6 @@
 export type RichTextValidationCode =
   | "INVALID_DOCUMENT"
+  | "MIGRATION_FAILED"
   | "UNKNOWN_NODE"
   | "UNKNOWN_MARK"
   | "INVALID_RESOURCE"

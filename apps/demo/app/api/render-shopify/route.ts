@@ -1,19 +1,12 @@
 import { NextResponse } from "next/server";
-import {
-  renderShopifyHtml,
-  richTextJsonToPlainText,
-  validateRichTextDocument
-} from "@standhigher/shopify-rich-text-server";
+import { processRichText } from "@standhigher/shopify-rich-text-server";
 
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
-    const document = validateRichTextDocument(payload);
+    const result = processRichText(payload, { channel: "shopify-html" });
 
-    return NextResponse.json({
-      html: renderShopifyHtml(document),
-      plainText: richTextJsonToPlainText(document.content)
-    });
+    return NextResponse.json(result, { status: result.ok ? 200 : 400 });
   } catch (error) {
     return NextResponse.json(
       {
@@ -23,4 +16,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

@@ -127,7 +127,7 @@ Provider 只返回稳定 GID 和有限展示快照。取消时返回 `null`，�
 ```ts
 {
   version: 1,
-  schemaVersion: "2026-07",
+  schemaVersion: "2026-08",
   content
 }
 ```
@@ -165,26 +165,28 @@ rendered_html 只是缓存或发布产物
 ```ts
 import {
   RICH_TEXT_VALIDATION_LIMITS,
-  RichTextValidationError,
-  renderShopifyHtml,
-  richTextJsonToPlainText,
+  processRichText,
   validateRichTextDocument
 } from "@standhigher/shopify-rich-text-server";
 
 export async function PUT(request: Request) {
   const payload = await request.json();
 
+  const result = processRichText(payload.description, { channel: "shopify-html" });
+
+  if (!result.ok) {
+    return Response.json({ error: result.error }, { status: 400 });
+  }
+
   const document = validateRichTextDocument(payload.description);
-  const plainText = richTextJsonToPlainText(document.content);
-  const html = renderShopifyHtml(document);
 
   await db.productDescription.update({
     where: { id: payload.id },
     data: {
       content_json: document.content,
-      content_plain_text: plainText,
+      content_plain_text: result.plainText,
       schema_version: document.schemaVersion,
-      rendered_html: html
+      rendered_html: result.html
     }
   });
 
@@ -201,7 +203,9 @@ const document = validateRichTextDocument(payload.description, {
 });
 ```
 
-非法 Node、Mark、URL 或超出限制时会抛出 `RichTextValidationError`，业务应根据 `code` 和 `path` 返回可观察的错误，不要直接把原始输入写入数据库。
+非法 Node、Mark、URL、Migration 失败或超出限制时会返回结构化错误或抛出 `RichTextValidationError`，业务应根据 `code` 和 `path` 返回可观察的错误，不要直接把原始输入写入数据库。
+
+Migration 失败时必须保留原始持久化数据，不要生成新 HTML，不要覆盖 `content_json` 或 `rendered_html`。成功迁移后，业务可以在保存路径中把新的 `schema_version` 回写。
 
 业务需要自己处理：
 
@@ -217,21 +221,20 @@ const document = validateRichTextDocument(payload.description, {
 
 ```ts
 import {
+  processRichText,
   renderShopifyHtml,
-  richTextJsonToPlainText,
   validateRichTextDocument
 } from "@standhigher/shopify-rich-text-server";
 
 export async function POST(request: Request) {
   const payload = await request.json();
-  const document = validateRichTextDocument(payload);
+  const result = processRichText(payload, { channel: "shopify-html" });
 
-  return Response.json({
-    html: renderShopifyHtml(document),
-    plainText: richTextJsonToPlainText(document.content)
-  });
+  return Response.json(result, { status: result.ok ? 200 : 400 });
 }
 ```
+
+`renderShopifyHtml()` 继续保留为兼容入口；新接入推荐使用 `processRichText()`，因为它会返回 warnings、schemaVersion 和 channel。
 
 资源 HTML 可以由服务端业务层提供 URL 映射，但不要把 Admin URL 或店铺域名写入文档：
 
@@ -252,7 +255,7 @@ await fetch("/api/rich-text/render-shopify", {
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     version: 1,
-    schemaVersion: "2026-07",
+    schemaVersion: "2026-08",
     content
   })
 });
@@ -263,6 +266,28 @@ await fetch("/api/rich-text/render-shopify", {
 ```tsx
 import { renderShopifyHtml } from "@standhigher/shopify-rich-text-server";
 ```
+
+## 八点一、标准 HTML Import（0.6.x）
+
+```ts
+import { importStandardHtml } from "@standhigher/shopify-rich-text-server";
+
+const imported = importStandardHtml(payload.html);
+
+if (!imported.ok) {
+  return Response.json({ error: imported.error, warnings: imported.warnings }, { status: 400 });
+}
+
+await db.productDescription.update({
+  where: { id: payload.id },
+  data: {
+    content_json: imported.document.content,
+    schema_version: imported.document.schemaVersion
+  }
+});
+```
+
+Import 只承诺标准 HTML：段落、标题、列表、链接、图片、blockquote、粗体、斜体和下划线。Word HTML、Google Docs HTML、复杂 inline style、表单、iframe、脚本和任意自定义标签不属于稳定承诺；这些输入会被清理、降级或返回 warning/error。
 
 ## 九、上传图片到 Shopify
 

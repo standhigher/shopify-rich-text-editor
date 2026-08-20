@@ -20,8 +20,21 @@ export type {
   ResourceSelectionOptions,
   ResourceType
 } from "./providers";
-export { migrateDocument, MigrationError } from "./migrations";
+export {
+  CURRENT_RICH_TEXT_SCHEMA_VERSION,
+  migrateDocument,
+  MigrationError,
+  RICH_TEXT_MIGRATIONS
+} from "./migrations";
 export type { Migration, MigrationErrorCode } from "./migrations";
+export { runRichTextMigrations } from "./migration-runner";
+export type {
+  RichTextMigrationFailure,
+  RichTextMigrationFailureCode,
+  RichTextMigrationResult,
+  RichTextMigrationSuccess,
+  RunRichTextMigrationsOptions
+} from "./migration-runner";
 export { RICH_TEXT_PROTOCOL_VERSION } from "./types";
 export type {
   EditorChangeContext,
