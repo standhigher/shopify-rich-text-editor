@@ -7,7 +7,7 @@ This project follows semantic versioning for the published npm packages:
 - `@standhigher/shopify-rich-text-editor`
 - `@standhigher/shopify-rich-text-server`
 
-## Unreleased - 0.4.x Extension Contract
+## 0.4.0 - 2026-08-20
 
 ### Added
 

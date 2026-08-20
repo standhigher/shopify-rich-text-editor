@@ -94,8 +94,9 @@ npm publish --access public --tag next --registry https://registry.npmjs.org/
 Move tags explicitly when needed:
 
 ```bash
-npm dist-tag add @standhigher/shopify-rich-text-editor@0.3.0 latest
-npm dist-tag add @standhigher/shopify-rich-text-server@0.3.0 latest
+npm dist-tag add @standhigher/shopify-rich-text-core@0.4.0 latest
+npm dist-tag add @standhigher/shopify-rich-text-editor@0.4.0 latest
+npm dist-tag add @standhigher/shopify-rich-text-server@0.4.0 latest
 ```
 
 ## Publish
@@ -109,7 +110,7 @@ pnpm release:publish
 After a successful publish:
 
 ```bash
-git tag v0.3.0
+git tag v0.4.0
 git push origin <branch> --tags
 ```
 
