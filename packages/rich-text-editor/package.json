@@ -1,6 +1,6 @@
 {
   "name": "@standhigher/shopify-rich-text-editor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "React rich text editor for Shopify Apps, built with Tiptap 3, Shopify Polaris, and Shopify image upload hooks.",
   "license": "MIT",

@@ -43,7 +43,7 @@ npm whoami --registry https://registry.npmjs.org/
 Web Auth is also supported:
 
 ```bash
-npm login --registry https://registry.npmjs.org/
+npm login --auth-type=web --registry https://registry.npmjs.org/
 ```
 
 If the account requires OTP for direct publishing, use the current authenticator code:
@@ -94,8 +94,8 @@ npm publish --access public --tag next --registry https://registry.npmjs.org/
 Move tags explicitly when needed:
 
 ```bash
-npm dist-tag add @standhigher/shopify-rich-text-editor@0.2.0 latest
-npm dist-tag add @standhigher/shopify-rich-text-server@0.2.0 latest
+npm dist-tag add @standhigher/shopify-rich-text-editor@0.3.0 latest
+npm dist-tag add @standhigher/shopify-rich-text-server@0.3.0 latest
 ```
 
 ## Publish
@@ -109,7 +109,7 @@ pnpm release:publish
 After a successful publish:
 
 ```bash
-git tag v0.2.0
+git tag v0.3.0
 git push origin <branch> --tags
 ```
 
