@@ -51,7 +51,7 @@
     "shopify-html"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && node ../../scripts/fix-esm-relative-imports.mjs dist",
     "prepack": "pnpm build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"

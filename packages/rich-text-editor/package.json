@@ -60,7 +60,7 @@
     "shopify-image-upload"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.build.json && cp src/styles.css dist/styles.css",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && node ../../scripts/fix-esm-relative-imports.mjs dist && cp src/styles.css dist/styles.css",
     "prepack": "pnpm build",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit"
