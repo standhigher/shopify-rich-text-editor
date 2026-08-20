@@ -94,6 +94,7 @@ export interface RichTextEditorProps {
   readOnly?: boolean;
   disabled?: boolean;
   placeholder?: string;
+  extensionContracts?: readonly EditorExtension[];
   onUploadImage?: (file: File) => Promise<ShopifyImageUploadResult>;
 }
 
@@ -128,6 +129,28 @@ export interface ShopifyImageUploadResult {
 - `disabled` keeps the toolbar visible but disables editing controls.
 - `onError` receives structured recoverable upload errors.
 - Pending debounced changes are flushed when the editor unmounts.
+
+## Extension contracts
+
+The editor accepts optional `EditorExtension` contracts. The default StarterKit, Link, Underline, and Image setup remains registered automatically, so existing 0.3.x usage does not change.
+
+```tsx
+import { Node } from "@tiptap/core";
+import { RichTextEditor, type EditorExtension } from "@standhigher/shopify-rich-text-editor";
+
+const calloutExtension: EditorExtension = {
+  id: "callout",
+  version: "1.0.0",
+  nodes: ["callout"],
+  client: {
+    extensions: [Node.create({ name: "callout", group: "block", content: "inline*" })]
+  }
+};
+
+<RichTextEditor value={emptyContent} extensionContracts={[calloutExtension]} />;
+```
+
+The registry resolves `dependencies` first and rejects duplicate extension IDs, duplicate node or mark names, missing dependencies, and dependency cycles with structured `ExtensionRegistryError` values. Client registration does not make a node safe for server rendering by itself.
 
 ## Package Quality
 

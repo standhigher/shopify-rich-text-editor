@@ -53,6 +53,38 @@ export async function renderDescription(input: unknown) {
 // `RICH_TEXT_VALIDATION_LIMITS` contains the defaults.
 ```
 
+## Extension contracts
+
+Server registration is separate from client registration. A custom node must be registered with the server before validation or rendering; otherwise validation rejects it as an unknown node.
+
+```ts
+import { Node } from "@tiptap/core";
+import {
+  createServerExtensionRegistry,
+  richTextJsonToHtml,
+  validateRichTextDocument,
+  type ServerExtension
+} from "@standhigher/shopify-rich-text-server";
+
+const calloutExtension: ServerExtension = {
+  id: "callout",
+  version: "1.0.0",
+  nodes: ["callout"],
+  server: {
+    extensions: [Node.create({ name: "callout", group: "block", content: "inline*" })],
+    serializers: {
+      callout: (node) => `<p>${node.content?.map((child) => child.text ?? "").join("") ?? ""}</p>`
+    }
+  }
+};
+
+const registry = createServerExtensionRegistry([calloutExtension]);
+const document = validateRichTextDocument(input, {}, registry);
+const html = richTextJsonToHtml(document.content, [calloutExtension]);
+```
+
+Keep the client and server contracts in the same application module or registry factory. The server registry controls the node and mark allowlist, and custom serializer output must still pass through the channel adapter and sanitizer before publishing.
+
 ## Feature Overview
 
 - Validate the persisted rich text document envelope.
