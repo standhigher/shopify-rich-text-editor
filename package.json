@@ -1,6 +1,6 @@
 {
   "name": "shopify-rich-text-editor",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Reusable Shopify App rich text editor workspace with React, Tiptap, Polaris, and server-side Shopify HTML rendering.",
   "license": "MIT",
@@ -32,13 +32,15 @@
     "build": "pnpm -r build",
     "build-storybook": "pnpm --filter @standhigher/shopify-rich-text-editor-demo build",
     "lint": "pnpm -r typecheck",
-    "pack:dry-run": "pnpm --filter @standhigher/shopify-rich-text-core exec npm pack --dry-run && pnpm --filter @standhigher/shopify-rich-text-editor exec npm pack --dry-run && pnpm --filter @standhigher/shopify-rich-text-server exec npm pack --dry-run",
-    "release:check": "pnpm -r typecheck && pnpm test && pnpm build && pnpm pack:dry-run",
+    "pack:dry-run": "NPM_CONFIG_CACHE=/tmp/best-rich-text-npm-cache pnpm --filter @standhigher/shopify-rich-text-core exec npm pack --dry-run && NPM_CONFIG_CACHE=/tmp/best-rich-text-npm-cache pnpm --filter @standhigher/shopify-rich-text-editor exec npm pack --dry-run && NPM_CONFIG_CACHE=/tmp/best-rich-text-npm-cache pnpm --filter @standhigher/shopify-rich-text-server exec npm pack --dry-run",
+    "pack:check": "node scripts/check-package-contents.mjs",
+    "performance:baseline": "pnpm exec vitest run tests/compatibility/performance-baseline.test.ts --reporter verbose",
+    "release:check": "git diff --check && pnpm -r typecheck && pnpm test && pnpm build && pnpm pack:dry-run && pnpm pack:check",
     "release:major": "npm version major --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor-demo version major --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-core version major --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor version major --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-server version major --no-git-tag-version",
     "release:minor": "npm version minor --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor-demo version minor --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-core version minor --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor version minor --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-server version minor --no-git-tag-version",
     "release:patch": "npm version patch --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor-demo version patch --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-core version patch --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor version patch --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-server version patch --no-git-tag-version",
     "release:publish": "pnpm release:check && pnpm --filter @standhigher/shopify-rich-text-core exec npm publish --access public --registry https://registry.npmjs.org/ && pnpm --filter @standhigher/shopify-rich-text-editor exec npm publish --access public --registry https://registry.npmjs.org/ && pnpm --filter @standhigher/shopify-rich-text-server exec npm publish --access public --registry https://registry.npmjs.org/",
-    "test": "pnpm -r test",
+    "test": "pnpm -r test && pnpm exec vitest run tests/compatibility",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {

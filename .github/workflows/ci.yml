@@ -7,6 +7,7 @@ on:
       - main
       - master
       - codex/npm-release-prep
+      - codex/1.0-stable-release
 
 jobs:
   checks:
@@ -45,5 +46,5 @@ jobs:
       - name: Build demo
         run: npm run build-storybook
 
-      - name: Package dry-run
-        run: pnpm pack:dry-run
+      - name: 1.0 release gate
+        run: pnpm release:check
