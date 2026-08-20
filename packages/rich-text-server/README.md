@@ -28,30 +28,52 @@ pnpm add @standhigher/shopify-rich-text-server
 import {
   RICH_TEXT_VALIDATION_LIMITS,
   RichTextValidationError,
-  renderShopifyHtml,
-  richTextJsonToPlainText,
-  validateRichTextDocument
+  processRichText
 } from "@standhigher/shopify-rich-text-server";
 
 export async function renderDescription(input: unknown) {
-  try {
-    const document = validateRichTextDocument(input);
+  const result = processRichText(input, { channel: "shopify-html" });
 
-    return {
-      html: renderShopifyHtml(document),
-      plainText: richTextJsonToPlainText(document.content)
-    };
-  } catch (error) {
-    if (error instanceof RichTextValidationError) {
-      console.error(error.code, error.path);
-    }
-    throw error;
+  if (!result.ok) {
+    console.error(result.error.code, result.error.path);
+    throw new RichTextValidationError(result.error.code, result.error.message, result.error.path);
   }
+
+  return {
+    html: result.html,
+    plainText: result.plainText,
+    warnings: result.warnings,
+    schemaVersion: result.schemaVersion
+  };
 }
 
 // `validateRichTextDocument(input, limits)` supports per-request limits.
 // `RICH_TEXT_VALIDATION_LIMITS` contains the defaults.
 ```
+
+`processRichText()` is the recommended publishing and cache-generation entry point. It validates the persisted envelope, migrates to `CURRENT_RICH_TEXT_SCHEMA_VERSION`, validates the current schema, serializes, applies the channel adapter, sanitizes, and returns a structured `ProcessResult`.
+
+`renderShopifyHtml()` remains available as a compatibility API when callers only need the HTML string and do not need warnings.
+
+## Standard HTML import (0.6.x)
+
+```ts
+import { importStandardHtml } from "@standhigher/shopify-rich-text-server";
+
+const imported = importStandardHtml("<h2>Title</h2><p>Hello <strong>world</strong></p>");
+
+if (imported.ok) {
+  await saveRichTextDocument(imported.document);
+}
+```
+
+The importer supports constrained standard HTML: paragraphs, H1-H4 headings, lists, links, images, blockquotes, bold, italic, and underline. It sanitizes before and after conversion and returns warnings when unsupported or unsafe HTML is removed.
+
+Word HTML, Google Docs HTML, complex inline styles, forms, iframes, scripts, and arbitrary custom tags are not part of the stable import contract.
+
+## Schema migration (0.6.x)
+
+`validateRichTextDocument()` and `processRichText()` migrate documents from published schema versions to `CURRENT_RICH_TEXT_SCHEMA_VERSION` before final schema validation. Migration failure is recoverable: callers should keep the original stored document, report the structured error, and avoid overwriting cached HTML or persisted JSON.
 
 ## Shopify resource rendering (0.5.x)
 
@@ -105,6 +127,10 @@ Keep the client and server contracts in the same application module or registry 
 ## Feature Overview
 
 - Validate the persisted rich text document envelope.
+- Migrate published schema versions to the current schema.
+- Process documents through the recommended `processRichText()` pipeline.
+- Import constrained standard HTML into Tiptap JSON.
+- Report channel warnings through a callable capability matrix.
 - Render Tiptap JSON to HTML.
 - Extract plain text for indexing or previews.
 - Sanitize HTML with an allowlist.

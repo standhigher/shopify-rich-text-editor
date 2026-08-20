@@ -5,7 +5,28 @@ All notable changes to this project are documented here.
 This project follows semantic versioning for the published npm packages:
 
 - `@standhigher/shopify-rich-text-editor`
+- `@standhigher/shopify-rich-text-core`
 - `@standhigher/shopify-rich-text-server`
+
+## 0.6.0 - 2026-08-20
+
+### Added
+
+- Added `CURRENT_RICH_TEXT_SCHEMA_VERSION` and a recoverable schema migration runner.
+- Added constrained standard HTML import with pre-sanitization, normalization, structured warnings, and validation.
+- Added `processRichText()` as the recommended server pipeline returning HTML, plain text, warnings, schema version, and channel.
+- Added a callable Shopify HTML Channel Capability Matrix for supported, degraded, and unsupported Node/Mark behavior.
+- Added Demo API support for returning the full `ProcessResult`.
+
+### Changed
+
+- `validateRichTextDocument()` now prepares persisted documents by migrating from published schema versions before current schema validation.
+- `renderShopifyHtml()` remains available as a compatibility HTML-string API.
+
+### Constraints
+
+- Standard HTML import does not promise stable support for Word HTML, Google Docs HTML, complex inline styles, forms, iframes, scripts, or arbitrary custom tags.
+- Migration failures preserve the original input and should not overwrite stored JSON or cached HTML.
 
 ## 0.4.0 - 2026-08-20
 

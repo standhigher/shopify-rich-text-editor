@@ -36,6 +36,7 @@ describe("migration runner", () => {
     const second = runRichTextMigrations(first.document);
 
     expect(second.ok).toBe(true);
+    if (!second.ok) throw new Error(second.message);
     expect(second.document).toEqual(first.document);
     expect(second.migrationsApplied).toEqual([]);
   });
