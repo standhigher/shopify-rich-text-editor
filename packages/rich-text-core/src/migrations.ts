@@ -1,5 +1,7 @@
 import type { RichTextDocument } from "./types";
 
+export const CURRENT_RICH_TEXT_SCHEMA_VERSION = "2026-08" as const;
+
 export interface Migration {
   from: string;
   to: string;
@@ -7,6 +9,17 @@ export interface Migration {
 }
 
 export type MigrationErrorCode = "MISSING_MIGRATION" | "DUPLICATE_MIGRATION" | "MIGRATION_CYCLE";
+
+export const RICH_TEXT_MIGRATIONS = [
+  {
+    from: "2026-07",
+    to: CURRENT_RICH_TEXT_SCHEMA_VERSION,
+    migrate: (document: RichTextDocument): RichTextDocument => ({
+      ...document,
+      schemaVersion: CURRENT_RICH_TEXT_SCHEMA_VERSION
+    })
+  }
+] as const satisfies readonly Migration[];
 
 export class MigrationError extends Error {
   readonly code: MigrationErrorCode;

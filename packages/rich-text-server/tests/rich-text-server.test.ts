@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  CURRENT_RICH_TEXT_SCHEMA_VERSION,
   RICH_TEXT_VALIDATION_LIMITS,
   renderShopifyHtml,
   richTextJsonToHtml,
@@ -46,7 +47,7 @@ describe("rich text server", () => {
       plainText: "Summer linen shirt"
     });
 
-    expect(richTextDocument.schemaVersion).toBe("2026-07");
+    expect(richTextDocument.schemaVersion).toBe(CURRENT_RICH_TEXT_SCHEMA_VERSION);
     expect(richTextDocument.content.type).toBe("doc");
   });
 

@@ -1,6 +1,7 @@
 import type { JSONContent } from "@tiptap/core";
 import { z } from "zod";
 
+import { runRichTextMigrations } from "@standhigher/shopify-rich-text-core";
 import type { RichTextDocument, RichTextValidationLimits } from "./types";
 import type { ResourceType } from "@standhigher/shopify-rich-text-core";
 import { RichTextValidationError } from "./errors";
@@ -40,14 +41,57 @@ export function validateRichTextDocument(
   limits: Partial<RichTextValidationLimits> = {},
   registry: ServerExtensionRegistry = createServerExtensionRegistry()
 ): RichTextDocument {
+  return prepareRichTextDocument(value, limits, registry);
+}
+
+export function prepareRichTextDocument(
+  value: unknown,
+  limits: Partial<RichTextValidationLimits> = {},
+  registry: ServerExtensionRegistry = createServerExtensionRegistry()
+): RichTextDocument {
+  const envelope = parseRichTextDocumentEnvelope(value);
+  const migration = runRichTextMigrations(envelope);
+
+  if (!migration.ok) {
+    throw new RichTextValidationError("MIGRATION_FAILED", migration.message);
+  }
+
+  return validateCurrentRichTextDocument(migration.document, limits, registry);
+}
+
+export function validateCurrentRichTextDocument(
+  value: unknown,
+  limits: Partial<RichTextValidationLimits> = {},
+  registry: ServerExtensionRegistry = createServerExtensionRegistry()
+): RichTextDocument {
   const result = richTextDocumentSchema.safeParse(value);
 
   if (!result.success) {
     throw new RichTextValidationError("INVALID_DOCUMENT", `Invalid rich text document: ${result.error.message}`);
   }
 
+  validateRichTextDocumentContent(result.data, limits, registry);
+
+  return result.data;
+}
+
+function parseRichTextDocumentEnvelope(value: unknown): RichTextDocument {
+  const result = richTextDocumentSchema.safeParse(value);
+
+  if (!result.success) {
+    throw new RichTextValidationError("INVALID_DOCUMENT", `Invalid rich text document: ${result.error.message}`);
+  }
+
+  return result.data;
+}
+
+function validateRichTextDocumentContent(
+  document: RichTextDocument,
+  limits: Partial<RichTextValidationLimits>,
+  registry: ServerExtensionRegistry
+): void {
   const validationLimits = { ...RICH_TEXT_VALIDATION_LIMITS, ...limits };
-  const serializedDocument = JSON.stringify(result.data);
+  const serializedDocument = JSON.stringify(document);
   const documentBytes = new TextEncoder().encode(serializedDocument).length;
 
   if (documentBytes > validationLimits.maxDocumentBytes) {
@@ -58,7 +102,7 @@ export function validateRichTextDocument(
   }
 
   const stats = { textLength: 0, nodeCount: 0, attrsCount: 0 };
-  validateNode(result.data.content, 0, "content", stats, validationLimits, registry);
+  validateNode(document.content, 0, "content", stats, validationLimits, registry);
 
   if (stats.textLength > validationLimits.maxTextLength) {
     throw new RichTextValidationError(
@@ -66,8 +110,6 @@ export function validateRichTextDocument(
       `Document text exceeds ${validationLimits.maxTextLength} characters`
     );
   }
-
-  return result.data;
 }
 
 function validateNode(

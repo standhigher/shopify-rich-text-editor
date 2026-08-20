@@ -1,3 +1,5 @@
+export { CURRENT_RICH_TEXT_SCHEMA_VERSION } from "@standhigher/shopify-rich-text-core";
+export type { RichTextMigrationResult } from "@standhigher/shopify-rich-text-core";
 export { renderShopifyHtml } from "./channels/shopify.adapter";
 export type { ShopifyResourceRenderOptions } from "./channels/resource-renderer";
 export { createServerExtensionRegistry } from "./extensions/registry";
@@ -8,4 +10,4 @@ export { RICH_TEXT_VALIDATION_LIMITS } from "./types";
 export type { RichTextDocument, RichTextValidationLimits } from "./types";
 export { RichTextValidationError } from "./errors";
 export type { RichTextValidationCode } from "./errors";
-export { validateRichTextDocument } from "./validation";
+export { prepareRichTextDocument, validateCurrentRichTextDocument, validateRichTextDocument } from "./validation";
