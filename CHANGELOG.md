@@ -21,7 +21,7 @@ This project follows semantic versioning for the published npm packages:
 - Existing editor usage keeps the default 0.3.x extensions and now accepts optional `extensionContracts`.
 - Server validation derives its node and mark allowlist from the registered server extensions.
 
-## Next 0.5.x
+## 0.5.0 - 2026-08-20
 
 ### Added
 

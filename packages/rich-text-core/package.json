@@ -1,6 +1,6 @@
 {
   "name": "@standhigher/shopify-rich-text-core",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "description": "Dependency-free contracts and registries for Shopify rich text extensions.",
   "license": "MIT",
@@ -12,7 +12,11 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

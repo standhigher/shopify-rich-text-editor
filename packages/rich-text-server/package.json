@@ -1,6 +1,6 @@
 {
   "name": "@standhigher/shopify-rich-text-server",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "description": "Server utilities for validating Tiptap JSON, sanitizing rich text HTML, and rendering Shopify-safe output.",
   "license": "MIT",
