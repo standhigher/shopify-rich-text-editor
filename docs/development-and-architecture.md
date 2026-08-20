@@ -258,13 +258,17 @@ ID / Node / Mark 冲突检测
 入口：
 
 ```ts
+export { CURRENT_RICH_TEXT_SCHEMA_VERSION } from "@standhigher/shopify-rich-text-core";
 export { renderShopifyHtml } from "./channels/shopify.adapter";
+export { processRichText } from "./process";
+export { importStandardHtml } from "./import";
+export { shopifyHtmlCapabilities, getChannelCapability } from "./channels/capabilities";
 export { createServerExtensionRegistry } from "./extensions/registry";
 export { richTextJsonToHtml, richTextJsonToPlainText } from "./serializers";
 export { sanitizeRichTextHtml } from "./security/sanitize-html";
 export { RICH_TEXT_VALIDATION_LIMITS } from "./types";
 export { RichTextValidationError } from "./errors";
-export { validateRichTextDocument } from "./validation";
+export { prepareRichTextDocument, validateRichTextDocument } from "./validation";
 ```
 
 核心函数：
@@ -272,12 +276,41 @@ export { validateRichTextDocument } from "./validation";
 | 函数 | 作用 |
 |---|---|
 | `validateRichTextDocument` | 校验 JSON 数据结构 |
+| `prepareRichTextDocument` | 校验数据包、执行 Schema Migration、再校验当前 Schema |
+| `processRichText` | 推荐的服务端处理入口，返回 HTML、Plain Text、warnings、schemaVersion 和 channel |
+| `importStandardHtml` | 把受限标准 HTML 导入为合法 Tiptap JSON |
 | `richTextJsonToHtml` | JSON 转 HTML |
 | `richTextJsonToPlainText` | JSON 转纯文本 |
 | `sanitizeRichTextHtml` | 白名单清洗 HTML |
 | `renderShopifyHtml` | 生成 Shopify Product/Page HTML |
 
 禁止在 Client Component 中 import `rich-text-server`。
+
+### 0.6.x Content Lifecycle
+
+服务端推荐处理顺序固定为：
+
+```text
+Validate envelope
+    ↓
+Migrate to CURRENT_RICH_TEXT_SCHEMA_VERSION
+    ↓
+Validate current Schema
+    ↓
+Serialize
+    ↓
+Channel Adapter
+    ↓
+Sanitize
+    ↓
+ProcessResult
+```
+
+业务发布和缓存 HTML 时优先使用 `processRichText(document, { channel: "shopify-html" })`。`renderShopifyHtml()` 继续保留为兼容入口，但不会返回 warnings 和 channel 元信息。
+
+`shopifyHtmlCapabilities` 是可调用的 Channel Capability Matrix。新增 Node/Mark 时必须在矩阵里标注 `supported`、`degraded` 或 `unsupported`，并为降级或不支持结果增加测试。当前矩阵覆盖 paragraph、heading、bold、italic、underline、lists、blockquote、link、image 和 `shopifyResource`。
+
+`importStandardHtml()` 只承诺导入结构清晰的标准 HTML。Word HTML、Google Docs HTML、复杂 inline style、表单、iframe、脚本和任意自定义标签不属于稳定 Import 范围。
 
 ## 安全白名单
 
@@ -333,7 +366,8 @@ Demo 展示：
 - `rendered_html` 只是缓存或发布产物。
 - 前端只负责编辑，不负责安全清洗。
 - 服务端发布前必须调用 `renderShopifyHtml`。
-- 新增节点必须同步更新前端、服务端、白名单、测试和文档。
+- 服务端发布前优先调用 `processRichText`，旧接入可继续调用 `renderShopifyHtml`。
+- 新增节点必须同步更新前端、服务端、白名单、Channel Capability Matrix、测试和文档。
 - 不要私自修改 Tiptap JSON 结构。
 - 不要修改 Lucide SVG path。
 

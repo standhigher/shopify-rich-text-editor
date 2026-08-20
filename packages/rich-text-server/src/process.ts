@@ -1,11 +1,11 @@
 import type { RichTextWarning } from "@standhigher/shopify-rich-text-core";
 
+import { collectChannelWarnings } from "./channels/capabilities";
 import type { ShopifyResourceRenderOptions } from "./channels/resource-renderer";
 import { renderShopifyHtmlContent } from "./channels/shopify.adapter";
 import { RichTextValidationError } from "./errors";
 import { richTextJsonToPlainText } from "./serializers";
 import type { ProcessResult, ProcessRichTextError, RichTextChannel } from "./result";
-import type { RichTextDocument } from "./types";
 import { prepareRichTextDocument } from "./validation";
 
 export interface ProcessRichTextOptions extends ShopifyResourceRenderOptions {
@@ -18,7 +18,7 @@ export function processRichText(value: unknown, options: ProcessRichTextOptions 
 
   try {
     const document = prepareRichTextDocument(value);
-    warnings.push(...collectShopifyHtmlWarnings(document));
+    warnings.push(...collectChannelWarnings(document.content, channel));
 
     const html = renderShopifyHtmlContent(document, options);
     return {
@@ -52,28 +52,4 @@ function normalizeProcessError(error: unknown): ProcessRichTextError {
     code: "PROCESSING_FAILED",
     message: error instanceof Error ? error.message : "Rich text processing failed."
   };
-}
-
-function collectShopifyHtmlWarnings(document: RichTextDocument): RichTextWarning[] {
-  const warnings: RichTextWarning[] = [];
-  walk(document.content, "content", (node, path) => {
-    if (node.type === "codeBlock" || node.type === "horizontalRule") {
-      warnings.push({
-        code: "CHANNEL_NODE_DEGRADED",
-        message: `Node ${node.type} is degraded by the shopify-html channel.`,
-        path,
-        details: { channel: "shopify-html", nodeType: node.type }
-      });
-    }
-  });
-  return warnings;
-}
-
-function walk(
-  node: RichTextDocument["content"],
-  path: string,
-  visit: (node: RichTextDocument["content"], path: string) => void
-): void {
-  visit(node, path);
-  node.content?.forEach((child, index) => walk(child, `${path}.content[${index}]`, visit));
 }

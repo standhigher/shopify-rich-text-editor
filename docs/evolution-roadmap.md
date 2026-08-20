@@ -285,6 +285,8 @@ rich-text-core
 
 ## 8. 0.6.x：内容生命周期版本
 
+> 当前编码分支已实现本节的最小闭环；发布版本号和最终 CHANGELOG 日期在阶段验收时确定。
+
 ### 8.1 版本目标
 
 建立完整、可迁移、可审计的内容生命周期，解决内容导入、版本升级和服务端处理的一致性问题。
@@ -309,16 +311,25 @@ Sanitize / Channel Check
 ProcessResult
 ```
 
-建议返回：
+当前 `processRichText()` 返回：
 
 ```ts
-interface ProcessResult {
-  html?: string;
-  plainText?: string;
-  warnings: RichTextWarning[];
-  schemaVersion: string;
-  channel: string;
-}
+type ProcessResult =
+  | {
+      ok: true;
+      html: string;
+      plainText: string;
+      warnings: RichTextWarning[];
+      schemaVersion: string;
+      channel: "shopify-html";
+    }
+  | {
+      ok: false;
+      error: ProcessRichTextError;
+      warnings: RichTextWarning[];
+      schemaVersion?: string;
+      channel: "shopify-html";
+    };
 ```
 
 同时实现：
@@ -328,8 +339,25 @@ interface ProcessResult {
 - JSON、HTML、Plain Text Serializer 的测试矩阵；
 - Migration 失败和回滚策略；
 - Channel Capability Matrix；
-- 不支持 Node 的显式 warnings 或 errors；
-- 文档内容哈希或等价的幂等校验能力。
+- 不支持 Node 的显式 warnings 或 errors。
+
+当前暂不把内容哈希作为 0.6.x 门禁。
+
+Channel Capability Matrix 使用可调用数据结构：
+
+```ts
+interface ChannelCapabilityMatrix {
+  channel: "shopify-html";
+  nodes: Record<string, { support: "supported" | "degraded" | "unsupported" }>;
+  marks: Record<string, { support: "supported" | "degraded" | "unsupported" }>;
+}
+```
+
+基础覆盖范围包括：
+
+- Node：paragraph、heading、blockquote、bulletList、orderedList、listItem、hardBreak、image、shopifyResource；
+- Mark：bold、italic、underline、link；
+- 降级项：codeBlock、horizontalRule、code、strike。
 
 ### 8.3 Import 范围控制
 

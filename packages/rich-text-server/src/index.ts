@@ -2,6 +2,18 @@ export { CURRENT_RICH_TEXT_SCHEMA_VERSION } from "@standhigher/shopify-rich-text
 export type { RichTextMigrationResult } from "@standhigher/shopify-rich-text-core";
 export { renderShopifyHtml } from "./channels/shopify.adapter";
 export type { ShopifyResourceRenderOptions } from "./channels/resource-renderer";
+export {
+  collectChannelWarnings,
+  getChannelCapability,
+  getChannelCapabilityMatrix,
+  shopifyHtmlCapabilities
+} from "./channels/capabilities";
+export type {
+  ChannelCapability,
+  ChannelCapabilityKind,
+  ChannelCapabilityMatrix,
+  ChannelCapabilitySupport
+} from "./channels/capabilities";
 export { processRichText } from "./process";
 export type { ProcessRichTextOptions } from "./process";
 export type {

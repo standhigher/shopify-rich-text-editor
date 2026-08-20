@@ -7,6 +7,7 @@ describe("standard HTML import", () => {
     const result = importStandardHtml("<h2>Title</h2><p>Hello <strong>bold</strong> and <u>underlined</u>.</p>");
 
     expect(result.ok).toBe(true);
+    if (!result.ok) throw new Error(result.error.message);
     expect(result.document.schemaVersion).toBe(CURRENT_RICH_TEXT_SCHEMA_VERSION);
     expect(result.document.content).toMatchObject({
       type: "doc",
@@ -24,8 +25,9 @@ describe("standard HTML import", () => {
     );
 
     expect(result.ok).toBe(true);
+    if (!result.ok) throw new Error(result.error.message);
     expect(result.document.content.content?.[1]).toMatchObject({ type: "heading", attrs: { level: 4 } });
-    expect(result.document.content.content?.some((node) => node.type === "bulletList")).toBe(true);
+    expect(result.document.content.content?.some((node: { type?: string }) => node.type === "bulletList")).toBe(true);
     expect(JSON.stringify(result.document.content)).not.toContain("font-size");
   });
 
@@ -35,6 +37,7 @@ describe("standard HTML import", () => {
     );
 
     expect(result.ok).toBe(true);
+    if (!result.ok) throw new Error(result.error.message);
     expect(JSON.stringify(result.document.content)).toContain("https://example.com");
     expect(JSON.stringify(result.document.content)).toContain("https://cdn.shopify.com/image.jpg");
   });
@@ -45,6 +48,7 @@ describe("standard HTML import", () => {
     );
 
     expect(result.ok).toBe(true);
+    if (!result.ok) throw new Error(result.error.message);
     expect(result.warnings.map((warning) => warning.code)).toContain("HTML_SANITIZED");
     expect(result.warnings.map((warning) => warning.code)).toContain("UNSUPPORTED_HTML");
     expect(JSON.stringify(result.document.content)).not.toContain("javascript:");
