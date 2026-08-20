@@ -26,19 +26,31 @@ pnpm add @standhigher/shopify-rich-text-server
 
 ```ts
 import {
+  RICH_TEXT_VALIDATION_LIMITS,
+  RichTextValidationError,
   renderShopifyHtml,
   richTextJsonToPlainText,
   validateRichTextDocument
 } from "@standhigher/shopify-rich-text-server";
 
 export async function renderDescription(input: unknown) {
-  const document = validateRichTextDocument(input);
+  try {
+    const document = validateRichTextDocument(input);
 
-  return {
-    html: renderShopifyHtml(document),
-    plainText: richTextJsonToPlainText(document.content)
-  };
+    return {
+      html: renderShopifyHtml(document),
+      plainText: richTextJsonToPlainText(document.content)
+    };
+  } catch (error) {
+    if (error instanceof RichTextValidationError) {
+      console.error(error.code, error.path);
+    }
+    throw error;
+  }
 }
+
+// `validateRichTextDocument(input, limits)` supports per-request limits.
+// `RICH_TEXT_VALIDATION_LIMITS` contains the defaults.
 ```
 
 ## Feature Overview

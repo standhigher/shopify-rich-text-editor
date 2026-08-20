@@ -130,6 +130,8 @@ updated_at
 
 ```ts
 export { RichTextEditor } from "./components/RichTextEditor";
+export { RichTextError } from "./errors";
+export type { RichTextErrorCode } from "./errors";
 export type { RichTextEditorProps, ShopifyImageUploadResult } from "./types";
 ```
 
@@ -139,7 +141,9 @@ export type { RichTextEditorProps, ShopifyImageUploadResult } from "./types";
 export interface RichTextEditorProps {
   value: JSONContent;
   onChange?: (content: JSONContent) => void;
+  onError?: (error: RichTextError) => void;
   readOnly?: boolean;
+  disabled?: boolean;
   placeholder?: string;
   onUploadImage?: (file: File) => Promise<ShopifyImageUploadResult>;
 }
@@ -162,6 +166,9 @@ export interface ShopifyImageUploadResult {
 - 编辑器内部使用 `immediatelyRender: false`。
 - `onChange` 输出 Tiptap JSON。
 - `readOnly` 用于后台预览。
+- `disabled` 保留工具栏但禁用编辑控件。
+- `onError` 接收结构化上传错误。
+- 编辑器卸载前会 flush 尚未回调的最后一次 debounce Change。
 - 不要在服务端初始化 Tiptap editor。
 
 ## 工具栏规范
@@ -221,6 +228,8 @@ export interface ShopifyImageUploadResult {
 export { renderShopifyHtml } from "./channels/shopify.adapter";
 export { richTextJsonToHtml, richTextJsonToPlainText } from "./serializers";
 export { sanitizeRichTextHtml } from "./security/sanitize-html";
+export { RICH_TEXT_VALIDATION_LIMITS } from "./types";
+export { RichTextValidationError } from "./errors";
 export { validateRichTextDocument } from "./validation";
 ```
 

@@ -40,6 +40,7 @@ import { useState } from "react";
 import type { JSONContent } from "@tiptap/core";
 import {
   RichTextEditor,
+  type RichTextError,
   type ShopifyImageUploadResult
 } from "@standhigher/shopify-rich-text-editor";
 
@@ -67,11 +68,16 @@ async function uploadToShopify(file: File): Promise<ShopifyImageUploadResult> {
 export function ProductDescriptionEditor() {
   const [content, setContent] = useState<JSONContent>(emptyContent);
 
+  function handleError(error: RichTextError) {
+    console.error(error.code, error.message);
+  }
+
   return (
     <RichTextEditor
       value={content}
       onChange={setContent}
       onUploadImage={uploadToShopify}
+      onError={handleError}
       placeholder="Write product content..."
     />
   );
@@ -84,9 +90,18 @@ export function ProductDescriptionEditor() {
 export interface RichTextEditorProps {
   value: JSONContent;
   onChange?: (content: JSONContent) => void;
+  onError?: (error: RichTextError) => void;
   readOnly?: boolean;
+  disabled?: boolean;
   placeholder?: string;
   onUploadImage?: (file: File) => Promise<ShopifyImageUploadResult>;
+}
+
+export interface RichTextError {
+  code: "IMAGE_UPLOAD_FAILED";
+  message: string;
+  recoverable: boolean;
+  cause: unknown;
 }
 
 export interface ShopifyImageUploadResult {
@@ -106,6 +121,13 @@ export interface ShopifyImageUploadResult {
 | Shopify Polaris | `^12.0.0` |
 | Tiptap | `^3.0.0` |
 | TypeScript | `^5.8.2` |
+
+## Editor states
+
+- `readOnly` hides the toolbar and prevents editing.
+- `disabled` keeps the toolbar visible but disables editing controls.
+- `onError` receives structured recoverable upload errors.
+- Pending debounced changes are flushed when the editor unmounts.
 
 ## Package Quality
 

@@ -7,6 +7,20 @@ This project follows semantic versioning for the published npm packages:
 - `@standhigher/shopify-rich-text-editor`
 - `@standhigher/shopify-rich-text-server`
 
+## Unreleased - 0.3.x Core Stability
+
+### Added
+
+- Added editor component regression tests with jsdom and Polaris test setup.
+- Added `disabled` editor state and structured `RichTextError` upload failures.
+- Added server-side validation limits for UTF-8 document bytes, text length, node count, attrs count, and nesting depth.
+- Added structured validation errors for unknown nodes, unknown marks, unsafe URLs, and oversized documents.
+
+### Changed
+
+- Pending debounced editor changes are flushed before unmount.
+- Server validation supports per-request limit overrides while preserving default limits.
+
 ## 0.2.0 - 2026-08-11
 
 ### Added

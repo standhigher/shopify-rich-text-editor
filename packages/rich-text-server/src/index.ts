@@ -1,6 +1,8 @@
 export { renderShopifyHtml } from "./channels/shopify.adapter";
 export { richTextJsonToHtml, richTextJsonToPlainText } from "./serializers";
 export { sanitizeRichTextHtml } from "./security/sanitize-html";
-export type { RichTextDocument } from "./types";
+export { RICH_TEXT_VALIDATION_LIMITS } from "./types";
+export type { RichTextDocument, RichTextValidationLimits } from "./types";
+export { RichTextValidationError } from "./errors";
+export type { RichTextValidationCode } from "./errors";
 export { validateRichTextDocument } from "./validation";
-

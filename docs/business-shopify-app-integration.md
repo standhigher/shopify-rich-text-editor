@@ -73,6 +73,7 @@ export function ProductDescriptionEditor() {
     <RichTextEditor
       value={content}
       onChange={setContent}
+      onError={(error) => console.error(error.code, error.message)}
       placeholder="Write product description"
     />
   );
@@ -83,6 +84,8 @@ export function ProductDescriptionEditor() {
 
 - 组件必须是 Client Component。
 - `onChange` 输出的是 Tiptap JSON，不是 HTML。
+- `disabled` 会保留工具栏但禁用编辑控件；`readOnly` 会隐藏工具栏。
+- 图片上传失败通过 `onError` 返回结构化的可恢复错误。
 - 不要在前端生成最终 HTML。
 
 ## 六、保存数据结构
@@ -129,6 +132,8 @@ rendered_html 只是缓存或发布产物
 
 ```ts
 import {
+  RICH_TEXT_VALIDATION_LIMITS,
+  RichTextValidationError,
   renderShopifyHtml,
   richTextJsonToPlainText,
   validateRichTextDocument
@@ -154,6 +159,17 @@ export async function PUT(request: Request) {
   return Response.json({ ok: true });
 }
 ```
+
+服务端校验默认限制包括文档 UTF-8 字节数、文本长度、Node 数量、attrs 数量和嵌套深度。业务可以通过第二个参数覆盖单次请求的限制：
+
+```ts
+const document = validateRichTextDocument(payload.description, {
+  maxDocumentBytes: RICH_TEXT_VALIDATION_LIMITS.maxDocumentBytes,
+  maxNodeCount: 5_000
+});
+```
+
+非法 Node、Mark、URL 或超出限制时会抛出 `RichTextValidationError`，业务应根据 `code` 和 `path` 返回可观察的错误，不要直接把原始输入写入数据库。
 
 业务需要自己处理：
 

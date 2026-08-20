@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type ChangeEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import {
   Bold,
   Heading,
@@ -28,12 +28,15 @@ import {
 } from "@shopify/polaris";
 import { useEditorState, type Editor } from "@tiptap/react";
 
+import { RichTextError } from "../errors";
 import type { RichTextEditorProps, ShopifyImageUploadResult } from "../types";
 
 interface RichTextToolbarProps {
   editor: Editor | null;
   readOnly?: boolean;
+  disabled?: boolean;
   onUploadImage?: RichTextEditorProps["onUploadImage"];
+  onError?: RichTextEditorProps["onError"];
 }
 
 const blockOptions = [
@@ -58,13 +61,22 @@ const emptyToolbarState = {
   wordCount: 0
 };
 
-export function RichTextToolbar({ editor, readOnly, onUploadImage }: RichTextToolbarProps) {
+export function RichTextToolbar({ editor, readOnly, disabled: disabledProp, onUploadImage, onError }: RichTextToolbarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMountedRef = useRef(true);
   const [linkActive, setLinkActive] = useState(false);
   const [imageActive, setImageActive] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
   const toolbarState =
     useEditorState({
       editor,
@@ -104,7 +116,7 @@ export function RichTextToolbar({ editor, readOnly, onUploadImage }: RichTextToo
   }
 
   const currentEditor = editor;
-  const disabled = readOnly || !toolbarState.editable;
+  const disabled = readOnly || disabledProp || !toolbarState.editable;
 
   function changeBlock(value: string) {
     if (value === "paragraph") {
@@ -117,6 +129,8 @@ export function RichTextToolbar({ editor, readOnly, onUploadImage }: RichTextToo
   }
 
   function applyLink() {
+    if (disabled) return;
+
     const href = linkUrl.trim();
 
     if (!href) {
@@ -142,6 +156,8 @@ export function RichTextToolbar({ editor, readOnly, onUploadImage }: RichTextToo
   }
 
   function applyImageUrl() {
+    if (disabled) return;
+
     const src = imageUrl.trim();
     if (!src) return;
 
@@ -158,14 +174,20 @@ export function RichTextToolbar({ editor, readOnly, onUploadImage }: RichTextToo
 
     setIsUploading(true);
     try {
-      addImage(await onUploadImage(file));
+      const image = await onUploadImage(file);
+      if (!isMountedRef.current || currentEditor.isDestroyed || !currentEditor.isEditable) return;
+      addImage(image);
+    } catch (cause) {
+      if (isMountedRef.current) {
+        onError?.(new RichTextError("IMAGE_UPLOAD_FAILED", "Image upload failed", true, cause));
+      }
     } finally {
-      setIsUploading(false);
+      if (isMountedRef.current) setIsUploading(false);
     }
   }
 
   return (
-    <div className="bre-toolbar" aria-label="Rich text toolbar">
+    <div className="bre-toolbar" aria-label="Rich text toolbar" role="toolbar">
       <div className="bre-toolbar-row">
         <div className="bre-toolbar-group bre-toolbar-group--block">
           <div className="bre-toolbar-select">
@@ -248,16 +270,17 @@ export function RichTextToolbar({ editor, readOnly, onUploadImage }: RichTextToo
               <BlockStack gap="300">
                 <TextField
                   autoComplete="off"
+                  disabled={disabled}
                   label="URL"
                   value={linkUrl}
                   onChange={setLinkUrl}
                   placeholder="https://example.com"
                 />
                 <InlineStack gap="200">
-                  <Button variant="primary" onClick={applyLink}>
+                  <Button disabled={disabled} variant="primary" onClick={applyLink}>
                     Apply
                   </Button>
-                  <Button onClick={() => setLinkActive(false)}>Cancel</Button>
+                  <Button disabled={disabled} onClick={() => setLinkActive(false)}>Cancel</Button>
                 </InlineStack>
               </BlockStack>
             </Popover.Section>
@@ -282,16 +305,17 @@ export function RichTextToolbar({ editor, readOnly, onUploadImage }: RichTextToo
               <BlockStack gap="300">
                 <TextField
                   autoComplete="off"
+                  disabled={disabled}
                   label="Image URL"
                   value={imageUrl}
                   onChange={setImageUrl}
                   placeholder="https://cdn.shopify.com/image.jpg"
                 />
                 <InlineStack gap="200">
-                  <Button variant="primary" onClick={applyImageUrl}>
+                  <Button disabled={disabled} variant="primary" onClick={applyImageUrl}>
                     Insert
                   </Button>
-                  <Button onClick={() => setImageActive(false)}>Cancel</Button>
+                  <Button disabled={disabled} onClick={() => setImageActive(false)}>Cancel</Button>
                 </InlineStack>
               </BlockStack>
             </Popover.Section>
