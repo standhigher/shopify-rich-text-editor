@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import type { JSONContent } from "@tiptap/core";
 import { useEditor } from "@tiptap/react";
 
-import { baseExtensions } from "../extensions/base";
+import { createEditorConfig } from "../create-editor";
 import type { RichTextEditorProps } from "../types";
 import { EditorContentArea } from "./EditorContentArea";
 import { RichTextToolbar } from "./RichTextToolbar";
@@ -17,6 +17,7 @@ export function RichTextEditor({
   onError,
   onUploadImage,
   placeholder,
+  extensionContracts,
   readOnly = false,
   disabled = false
 }: RichTextEditorProps) {
@@ -25,17 +26,12 @@ export function RichTextEditor({
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
 
-  const editor = useEditor({
-    extensions: baseExtensions,
+  const editor = useEditor(createEditorConfig({
     content: value,
-    editable: !readOnly && !disabled,
-    immediatelyRender: false,
-    editorProps: {
-      attributes: {
-        "aria-label": placeholder ?? "Rich text editor",
-        class: "bre-prosemirror"
-      }
-    },
+    extensionContracts,
+    readOnly,
+    disabled,
+    placeholder,
     onUpdate({ editor }) {
       if (!onChange) return;
 
@@ -47,7 +43,7 @@ export function RichTextEditor({
         if (content) onChangeRef.current?.(content);
       }, CHANGE_DEBOUNCE_MS);
     }
-  });
+  }));
 
   useEffect(() => {
     editor?.setEditable(!readOnly && !disabled);
