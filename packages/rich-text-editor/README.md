@@ -84,6 +84,42 @@ export function ProductDescriptionEditor() {
 }
 ```
 
+## Shopify resource provider (0.5.x)
+
+Resource selection is injected by the host Shopify App. The editor does not import App Bridge, Shopify Admin SDK, or hold Admin API tokens.
+
+```tsx
+import type { ResourceProvider } from "@standhigher/shopify-rich-text-editor";
+
+const resourceProvider: ResourceProvider = {
+  async selectResource({ resourceType, selectionLimit }) {
+    // Call the host app's Resource Picker and map its result to this contract.
+    // Return null when the user cancels.
+    return selectFromHostApp({ resourceType, selectionLimit });
+  }
+};
+
+<RichTextEditor
+  value={content}
+  onChange={setContent}
+  resourceProvider={resourceProvider}
+/>;
+```
+
+The provider returns only a stable Shopify GID and an optional display snapshot:
+
+```ts
+interface ResourceReference {
+  resourceType: "product" | "collection" | "variant";
+  id: string;
+  title?: string;
+  handle?: string;
+  image?: string;
+}
+```
+
+Cancellation returns `null` and does not create an empty node. Provider failures use `PERMISSION_DENIED`, `NETWORK_ERROR`, or `RESOURCE_NOT_FOUND`; the editor reports an unexpected selection failure through `onError` without modifying the document.
+
 ## Component Overview
 
 ```ts
@@ -95,11 +131,12 @@ export interface RichTextEditorProps {
   disabled?: boolean;
   placeholder?: string;
   extensionContracts?: readonly EditorExtension[];
+  resourceProvider?: ResourceProvider;
   onUploadImage?: (file: File) => Promise<ShopifyImageUploadResult>;
 }
 
 export interface RichTextError {
-  code: "IMAGE_UPLOAD_FAILED";
+  code: "IMAGE_UPLOAD_FAILED" | "RESOURCE_SELECTION_FAILED";
   message: string;
   recoverable: boolean;
   cause: unknown;

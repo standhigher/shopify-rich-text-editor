@@ -10,3 +10,10 @@ export {
 export type { RichTextErrorCode } from "./errors";
 export type { EditorExtension } from "./create-editor";
 export type { RichTextEditorProps, ShopifyImageUploadResult } from "./types";
+export type {
+  ResourceProvider,
+  ResourceProviderErrorCode,
+  ResourceReference,
+  ResourceSelectionOptions,
+  ResourceType
+} from "@standhigher/shopify-rich-text-core";

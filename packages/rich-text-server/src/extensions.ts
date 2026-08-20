@@ -3,6 +3,8 @@ import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 
+import { shopifyResourceServerExtension } from "./extensions/shopify-resource";
+
 export const serverExtensions = [
   StarterKit.configure({
     heading: {
@@ -19,5 +21,6 @@ export const serverExtensions = [
     },
     openOnClick: false
   }),
-  Image
+  Image,
+  shopifyResourceServerExtension
 ];

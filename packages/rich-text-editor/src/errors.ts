@@ -1,4 +1,4 @@
-export type RichTextErrorCode = "IMAGE_UPLOAD_FAILED";
+export type RichTextErrorCode = "IMAGE_UPLOAD_FAILED" | "RESOURCE_SELECTION_FAILED";
 
 export class RichTextError extends Error {
   readonly code: RichTextErrorCode;

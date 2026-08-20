@@ -53,6 +53,23 @@ export async function renderDescription(input: unknown) {
 // `RICH_TEXT_VALIDATION_LIMITS` contains the defaults.
 ```
 
+## Shopify resource rendering (0.5.x)
+
+Product, Collection, and Variant references are validated by their stable Shopify GID. The server persists only `resourceType`, `id`, and optional `title`, `handle`, and `image` snapshot fields. Internal API responses, tokens, permissions, and provider-specific fields are rejected.
+
+By default, a resource renders as sanitized title text. A server-side business adapter may provide a URL builder:
+
+```ts
+const html = renderShopifyHtml(document, {
+  resourceUrlBuilder: (resource) =>
+    resource.handle ? `/${resource.resourceType}s/${resource.handle}` : undefined
+});
+```
+
+The builder runs on the server and accepts only absolute `http(s)` or single-slash relative URLs. Unsafe URLs fall back to text. Resource images are subject to the same `http`/`https` URL policy and final HTML allowlist sanitization.
+
+Shopify `rich_text_field` JSON import/export is not a stable 0.5.x API. Use Tiptap JSON as the source document until the planned compatibility matrix and downgrade tests are complete.
+
 ## Extension contracts
 
 Server registration is separate from client registration. A custom node must be registered with the server before validation or rendering; otherwise validation rejects it as an unknown node.

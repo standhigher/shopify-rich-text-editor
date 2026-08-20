@@ -68,6 +68,7 @@ export function RichTextEditor({
           readOnly={readOnly}
           disabled={disabled}
           onUploadImage={onUploadImage}
+          resourceProvider={resourceProvider}
           onError={onError}
         />
       ) : null}

@@ -95,6 +95,35 @@
   display: none;
 }
 
+.bre-shopify-resource {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--p-color-border-secondary, #e1e3e5);
+  border-radius: 0.5rem;
+  background: var(--p-color-bg-surface-secondary, #f6f6f7);
+}
+
+.bre-shopify-resource[data-resource-status="unresolved"] {
+  border-style: dashed;
+  opacity: 0.75;
+}
+
+.bre-shopify-resource__type,
+.bre-shopify-resource__id {
+  color: var(--p-color-text-secondary, #6d7175);
+  font-size: 0.75rem;
+}
+
+.bre-shopify-resource__type {
+  text-transform: capitalize;
+}
+
+.bre-shopify-resource__title {
+  font-weight: 600;
+}
+
 .bre-word-count {
   display: inline-flex;
   align-items: center;

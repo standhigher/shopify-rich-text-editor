@@ -15,7 +15,7 @@ export const baseEditorExtension: EditorExtension = {
   version: "1.0.0",
   nodes: [
     "doc", "paragraph", "text", "heading", "blockquote", "bulletList", "orderedList",
-    "listItem", "codeBlock", "horizontalRule", "hardBreak", "image"
+    "listItem", "codeBlock", "horizontalRule", "hardBreak", "image", "shopifyResource"
   ],
   marks: ["bold", "code", "italic", "strike", "underline", "link"],
   client: { extensions: baseExtensions }

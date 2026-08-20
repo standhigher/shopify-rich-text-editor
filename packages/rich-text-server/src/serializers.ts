@@ -1,18 +1,30 @@
-import type { JSONContent } from "@tiptap/core";
+import type { AnyExtension, JSONContent } from "@tiptap/core";
 import { generateHTML } from "@tiptap/html";
 import type { RichTextNode, RichTextSerializer } from "@standhigher/shopify-rich-text-core";
 
 import { createServerExtensionRegistry, type ServerExtension } from "./extensions/registry";
+import type { ShopifyResourceRenderOptions } from "./channels/resource-renderer";
 
 export function richTextJsonToHtml(
   content: JSONContent,
-  extensionContracts: readonly ServerExtension[] = []
+  extensionContracts: readonly ServerExtension[] = [],
+  renderOptions: ShopifyResourceRenderOptions = {}
 ): string {
   const registry = createServerExtensionRegistry(extensionContracts);
+  const serverExtensions = configureResourceRenderer(registry.serverExtensions, renderOptions);
   if (containsCustomSerializer(content, registry.serializers)) {
-    return renderHtmlWithSerializers(content, registry);
+    return renderHtmlWithSerializers(content, registry, serverExtensions);
   }
-  return generateHTML(content, [...registry.serverExtensions]);
+  return generateHTML(content, [...serverExtensions]);
+}
+
+function configureResourceRenderer(
+  extensions: readonly AnyExtension[],
+  options: ShopifyResourceRenderOptions
+): readonly AnyExtension[] {
+  return extensions.map((extension) =>
+    extension.name === "shopifyResource" ? extension.configure(options) : extension
+  );
 }
 
 export function richTextJsonToPlainText(
@@ -73,13 +85,14 @@ function containsCustomSerializer(
 
 function renderHtmlWithSerializers(
   node: JSONContent,
-  registry: ReturnType<typeof createServerExtensionRegistry>
+  registry: ReturnType<typeof createServerExtensionRegistry>,
+  serverExtensions: readonly AnyExtension[] = registry.serverExtensions
 ): string {
   const serializer = node.type ? registry.serializers[node.type] : undefined;
   if (serializer) return serializer(node as RichTextNode);
   if (node.type === "doc") {
-    return node.content?.map((child) => renderHtmlWithSerializers(child, registry)).join("") ?? "";
+    return node.content?.map((child) => renderHtmlWithSerializers(child, registry, serverExtensions)).join("") ?? "";
   }
 
-  return generateHTML({ type: "doc", content: [node] }, [...registry.serverExtensions]);
+  return generateHTML({ type: "doc", content: [node] }, [...serverExtensions]);
 }

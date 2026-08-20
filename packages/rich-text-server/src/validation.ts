@@ -2,6 +2,7 @@ import type { JSONContent } from "@tiptap/core";
 import { z } from "zod";
 
 import type { RichTextDocument, RichTextValidationLimits } from "./types";
+import type { ResourceType } from "@standhigher/shopify-rich-text-core";
 import { RichTextValidationError } from "./errors";
 import { RICH_TEXT_VALIDATION_LIMITS } from "./types";
 import { createServerExtensionRegistry, type ServerExtensionRegistry } from "./extensions/registry";
@@ -115,6 +116,10 @@ function validateNode(
     validateUrl(node.attrs?.src, path, "Image source", true);
   }
 
+  if (node.type === "shopifyResource") {
+    validateShopifyResource(node.attrs, path);
+  }
+
   node.marks?.forEach((mark, index) => {
     stats.attrsCount += Object.keys(mark.attrs ?? {}).length;
     if (stats.attrsCount > limits.maxAttrsCount) {
@@ -137,6 +142,57 @@ function validateNode(
   node.content?.forEach((child, index) => {
     validateNode(child, depth + 1, `${path}.content[${index}]`, stats, limits, registry);
   });
+}
+
+function validateShopifyResource(attrs: JSONContent["attrs"], path: string): void {
+  const resourceAttrs = attrs ?? {};
+  const allowedKeys = new Set(["resourceType", "id", "title", "handle", "image"]);
+  const unexpectedKey = Object.keys(resourceAttrs).find((key) => !allowedKeys.has(key));
+  if (unexpectedKey) {
+    throw new RichTextValidationError(
+      "INVALID_RESOURCE",
+      `Shopify resource contains unsupported attribute: ${unexpectedKey}`,
+      `${path}.attrs.${unexpectedKey}`
+    );
+  }
+
+  const resourceType = resourceAttrs.resourceType;
+  const id = resourceAttrs.id;
+  const patterns: Record<ResourceType, RegExp> = {
+    product: /^gid:\/\/shopify\/Product\/\d+$/,
+    collection: /^gid:\/\/shopify\/Collection\/\d+$/,
+    variant: /^gid:\/\/shopify\/ProductVariant\/\d+$/
+  };
+
+  if (typeof resourceType !== "string" || !(resourceType in patterns)) {
+    throw new RichTextValidationError(
+      "INVALID_RESOURCE",
+      "Shopify resource type must be product, collection, or variant",
+      `${path}.attrs.resourceType`
+    );
+  }
+
+  if (typeof id !== "string" || !patterns[resourceType as ResourceType].test(id)) {
+    throw new RichTextValidationError(
+      "INVALID_RESOURCE",
+      `Shopify ${resourceType} resource id must be a valid Shopify GID`,
+      `${path}.attrs.id`
+    );
+  }
+
+  for (const key of ["title", "handle"] as const) {
+    if (resourceAttrs[key] !== undefined && typeof resourceAttrs[key] !== "string") {
+      throw new RichTextValidationError(
+        "INVALID_RESOURCE",
+        `Shopify resource ${key} must be a string when provided`,
+        `${path}.attrs.${key}`
+      );
+    }
+  }
+
+  if (resourceAttrs.image !== undefined) {
+    validateUrl(resourceAttrs.image, path, "Resource image", true);
+  }
 }
 
 function validateUrl(value: unknown, path: string, label: string, image: boolean): void {

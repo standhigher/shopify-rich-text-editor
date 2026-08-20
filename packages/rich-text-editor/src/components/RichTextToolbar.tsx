@@ -9,6 +9,7 @@ import {
   Link as LinkIcon,
   List,
   ListOrdered,
+  PackageOpen,
   Redo2,
   RemoveFormatting,
   RotateCcw,
@@ -27,15 +28,18 @@ import {
   Tooltip
 } from "@shopify/polaris";
 import { useEditorState, type Editor } from "@tiptap/react";
+import type { ResourceType } from "@standhigher/shopify-rich-text-core";
 
 import { RichTextError } from "../errors";
 import type { RichTextEditorProps, ShopifyImageUploadResult } from "../types";
+import { selectResource } from "../providers/resource";
 
 interface RichTextToolbarProps {
   editor: Editor | null;
   readOnly?: boolean;
   disabled?: boolean;
   onUploadImage?: RichTextEditorProps["onUploadImage"];
+  resourceProvider?: RichTextEditorProps["resourceProvider"];
   onError?: RichTextEditorProps["onError"];
 }
 
@@ -45,6 +49,12 @@ const blockOptions = [
   { label: "Heading 2", value: "h2" },
   { label: "Heading 3", value: "h3" },
   { label: "Heading 4", value: "h4" }
+];
+
+const resourceOptions = [
+  { label: "Product", value: "product" },
+  { label: "Collection", value: "collection" },
+  { label: "Variant", value: "variant" }
 ];
 
 const emptyToolbarState = {
@@ -61,7 +71,14 @@ const emptyToolbarState = {
   wordCount: 0
 };
 
-export function RichTextToolbar({ editor, readOnly, disabled: disabledProp, onUploadImage, onError }: RichTextToolbarProps) {
+export function RichTextToolbar({
+  editor,
+  readOnly,
+  disabled: disabledProp,
+  onUploadImage,
+  resourceProvider,
+  onError
+}: RichTextToolbarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isMountedRef = useRef(true);
   const [linkActive, setLinkActive] = useState(false);
@@ -69,6 +86,9 @@ export function RichTextToolbar({ editor, readOnly, disabled: disabledProp, onUp
   const [linkUrl, setLinkUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [resourceActive, setResourceActive] = useState(false);
+  const [resourceType, setResourceType] = useState<ResourceType>("product");
+  const [isSelectingResource, setIsSelectingResource] = useState(false);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -166,6 +186,28 @@ export function RichTextToolbar({ editor, readOnly, disabled: disabledProp, onUp
     setImageActive(false);
   }
 
+  async function applyResource() {
+    if (disabled || !resourceProvider) return;
+
+    setIsSelectingResource(true);
+    try {
+      const resource = await selectResource(resourceProvider, {
+        resourceType,
+        selectionLimit: 1
+      });
+      if (!resource || !isMountedRef.current || currentEditor.isDestroyed || !currentEditor.isEditable) return;
+
+      currentEditor.chain().focus().insertShopifyResource(resource).run();
+      setResourceActive(false);
+    } catch (cause) {
+      if (isMountedRef.current) {
+        onError?.(new RichTextError("RESOURCE_SELECTION_FAILED", "Resource selection failed", true, cause));
+      }
+    } finally {
+      if (isMountedRef.current) setIsSelectingResource(false);
+    }
+  }
+
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
@@ -250,6 +292,49 @@ export function RichTextToolbar({ editor, readOnly, disabled: disabledProp, onUp
         <ToolbarDivider />
 
         <ToolbarGroup label="Insert">
+          {resourceProvider ? (
+            <Popover
+              active={resourceActive}
+              activator={
+                <span>
+                  <ToolbarIconButton
+                    label="Insert Shopify resource"
+                    disabled={disabled || isSelectingResource}
+                    icon={PackageOpen}
+                    onClick={() => setResourceActive((active) => !active)}
+                  />
+                </span>
+              }
+              autofocusTarget="first-node"
+              onClose={() => setResourceActive(false)}
+            >
+              <Popover.Section>
+                <BlockStack gap="300">
+                  <Select
+                    label="Resource type"
+                    options={resourceOptions}
+                    value={resourceType}
+                    disabled={disabled || isSelectingResource}
+                    onChange={(value) => setResourceType(value as ResourceType)}
+                  />
+                  <InlineStack gap="200">
+                    <Button
+                      disabled={disabled || isSelectingResource}
+                      loading={isSelectingResource}
+                      variant="primary"
+                      onClick={applyResource}
+                    >
+                      Insert resource
+                    </Button>
+                    <Button disabled={isSelectingResource} onClick={() => setResourceActive(false)}>
+                      Cancel
+                    </Button>
+                  </InlineStack>
+                </BlockStack>
+              </Popover.Section>
+            </Popover>
+          ) : null}
+
           <Popover
             active={linkActive}
             activator={

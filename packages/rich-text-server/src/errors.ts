@@ -2,6 +2,7 @@ export type RichTextValidationCode =
   | "INVALID_DOCUMENT"
   | "UNKNOWN_NODE"
   | "UNKNOWN_MARK"
+  | "INVALID_RESOURCE"
   | "UNSAFE_URL"
   | "DOCUMENT_TOO_LARGE"
   | "DOCUMENT_TOO_DEEP";

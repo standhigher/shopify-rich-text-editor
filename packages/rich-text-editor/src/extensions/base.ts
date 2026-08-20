@@ -3,6 +3,8 @@ import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 
+import { shopifyResourceExtension } from "./shopify-resource";
+
 export const baseExtensions = [
   StarterKit.configure({
     heading: {
@@ -22,6 +24,6 @@ export const baseExtensions = [
   }),
   Image.configure({
     allowBase64: false
-  })
+  }),
+  shopifyResourceExtension
 ];
-

@@ -1,4 +1,5 @@
 export { renderShopifyHtml } from "./channels/shopify.adapter";
+export type { ShopifyResourceRenderOptions } from "./channels/resource-renderer";
 export { createServerExtensionRegistry } from "./extensions/registry";
 export type { ServerExtension, ServerExtensionRegistry } from "./extensions/registry";
 export { richTextJsonToHtml, richTextJsonToPlainText } from "./serializers";

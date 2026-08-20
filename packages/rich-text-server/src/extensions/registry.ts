@@ -2,6 +2,7 @@ import type { AnyExtension } from "@tiptap/core";
 import {
   createExtensionRegistry,
   type RichTextExtension,
+  type RichTextNode,
   type ResolvedExtensionRegistry
 } from "@standhigher/shopify-rich-text-core";
 
@@ -15,10 +16,18 @@ export const baseServerExtension: ServerExtension = {
   version: "1.0.0",
   nodes: [
     "doc", "paragraph", "text", "heading", "blockquote", "bulletList", "orderedList",
-    "listItem", "codeBlock", "horizontalRule", "hardBreak", "image"
+    "listItem", "codeBlock", "horizontalRule", "hardBreak", "image", "shopifyResource"
   ],
   marks: ["bold", "code", "italic", "strike", "underline", "link"],
-  server: { extensions: serverExtensions }
+  server: {
+    extensions: serverExtensions,
+    plainTextSerializers: {
+      shopifyResource: (node: RichTextNode) =>
+        typeof node.attrs?.title === "string" && node.attrs.title.trim().length > 0
+          ? node.attrs.title
+          : "Unavailable Shopify resource"
+    }
+  }
 };
 
 export function createServerExtensionRegistry(
