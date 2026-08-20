@@ -12,6 +12,14 @@ export type {
   ToolbarItemDefinition
 } from "./extensions";
 export { RichTextError } from "./errors";
+export { ResourceProviderError } from "./providers";
+export type {
+  ResourceProvider,
+  ResourceProviderErrorCode,
+  ResourceReference,
+  ResourceSelectionOptions,
+  ResourceType
+} from "./providers";
 export { migrateDocument, MigrationError } from "./migrations";
 export type { Migration, MigrationErrorCode } from "./migrations";
 export { RICH_TEXT_PROTOCOL_VERSION } from "./types";

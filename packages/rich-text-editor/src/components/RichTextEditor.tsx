@@ -16,6 +16,7 @@ export function RichTextEditor({
   onChange,
   onError,
   onUploadImage,
+  resourceProvider,
   placeholder,
   extensionContracts,
   readOnly = false,
@@ -32,6 +33,7 @@ export function RichTextEditor({
     readOnly,
     disabled,
     placeholder,
+    resourceProvider,
     onUpdate({ editor }) {
       if (!onChange) return;
 
