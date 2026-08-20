@@ -2,6 +2,16 @@ export { CURRENT_RICH_TEXT_SCHEMA_VERSION } from "@standhigher/shopify-rich-text
 export type { RichTextMigrationResult } from "@standhigher/shopify-rich-text-core";
 export { renderShopifyHtml } from "./channels/shopify.adapter";
 export type { ShopifyResourceRenderOptions } from "./channels/resource-renderer";
+export { processRichText } from "./process";
+export type { ProcessRichTextOptions } from "./process";
+export type {
+  ProcessResult,
+  ProcessRichTextError,
+  ProcessRichTextErrorCode,
+  ProcessRichTextFailure,
+  ProcessRichTextSuccess,
+  RichTextChannel
+} from "./result";
 export { createServerExtensionRegistry } from "./extensions/registry";
 export type { ServerExtension, ServerExtensionRegistry } from "./extensions/registry";
 export { richTextJsonToHtml, richTextJsonToPlainText } from "./serializers";

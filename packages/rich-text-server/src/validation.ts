@@ -1,7 +1,7 @@
 import type { JSONContent } from "@tiptap/core";
 import { z } from "zod";
 
-import { runRichTextMigrations } from "@standhigher/shopify-rich-text-core";
+import { runRichTextMigrations, type RichTextDocument as CoreRichTextDocument } from "@standhigher/shopify-rich-text-core";
 import type { RichTextDocument, RichTextValidationLimits } from "./types";
 import type { ResourceType } from "@standhigher/shopify-rich-text-core";
 import { RichTextValidationError } from "./errors";
@@ -50,7 +50,7 @@ export function prepareRichTextDocument(
   registry: ServerExtensionRegistry = createServerExtensionRegistry()
 ): RichTextDocument {
   const envelope = parseRichTextDocumentEnvelope(value);
-  const migration = runRichTextMigrations(envelope);
+  const migration = runRichTextMigrations(envelope as CoreRichTextDocument);
 
   if (!migration.ok) {
     throw new RichTextValidationError("MIGRATION_FAILED", migration.message);
