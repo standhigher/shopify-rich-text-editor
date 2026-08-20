@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  CURRENT_RICH_TEXT_SCHEMA_VERSION,
+  createRichTextDocument,
   RICH_TEXT_PROTOCOL_VERSION,
   RichTextError,
   type RichTextDocument,
@@ -17,6 +19,22 @@ describe("rich text core contracts", () => {
 
     expect(RICH_TEXT_PROTOCOL_VERSION).toBe(1);
     expect(document.content.type).toBe("doc");
+  });
+
+  it("wraps editor JSON content in a fresh stable document envelope", () => {
+    const content = {
+      type: "doc",
+      content: [{ type: "paragraph", content: [{ type: "text", text: "Hello" }] }]
+    };
+
+    const document = createRichTextDocument(content);
+
+    expect(document).toEqual({
+      version: RICH_TEXT_PROTOCOL_VERSION,
+      schemaVersion: CURRENT_RICH_TEXT_SCHEMA_VERSION,
+      content
+    });
+    expect(document.content).not.toBe(content);
   });
 
   it("provides structured errors and warnings", () => {
