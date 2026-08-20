@@ -30,6 +30,25 @@ describe("1.0 public API surface", () => {
 
   it("keeps the 0.6 compatibility APIs available from package roots", () => {
     expect(editor.selectResource).toBeTypeOf("function");
-    expect(server.renderShopifyHtml).toBe(server.renderShopifyHtml);
+    expect(server.renderShopifyHtml).toBeTypeOf("function");
+    expect(core.createRichTextDocument).toBeTypeOf("function");
+  });
+
+  it("keeps the package export maps aligned with the stable entry points", () => {
+    const manifests = [
+      "packages/rich-text-core/package.json",
+      "packages/rich-text-editor/package.json",
+      "packages/rich-text-server/package.json"
+    ].map((packagePath) => JSON.parse(readFileSync(resolve(process.cwd(), packagePath), "utf8")) as {
+      exports?: Record<string, unknown>;
+    });
+
+    expect(manifests[0].exports).toMatchObject({ ".": expect.any(Object), "./experimental": expect.any(Object) });
+    expect(manifests[1].exports).toMatchObject({
+      ".": expect.any(Object),
+      "./experimental": expect.any(Object),
+      "./styles.css": expect.any(String)
+    });
+    expect(manifests[2].exports).toMatchObject({ ".": expect.any(Object) });
   });
 });
