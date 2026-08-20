@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@standhigher/shopify-rich-text-core": "workspace:*",
     "@standhigher/shopify-rich-text-editor": "workspace:*",
     "@standhigher/shopify-rich-text-server": "workspace:*",
     "@shopify/polaris": "^12.0.0",

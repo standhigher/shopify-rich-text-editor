@@ -3,7 +3,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppProvider, BlockStack, Card, InlineStack, Text } from "@shopify/polaris";
 import type { JSONContent } from "@tiptap/core";
-import { RichTextEditor, type ShopifyImageUploadResult } from "@standhigher/shopify-rich-text-editor";
+import {
+  RichTextEditor,
+  type ShopifyImageUploadResult
+} from "@standhigher/shopify-rich-text-editor";
+import type {
+  ResourceProvider,
+  ResourceReference,
+  ResourceSelectionOptions
+} from "@standhigher/shopify-rich-text-core";
 
 interface RichTextDocument {
   version: number;
@@ -50,8 +58,48 @@ const initialContent: JSONContent = {
           ]
         }
       ]
+    },
+    {
+      type: "shopifyResource",
+      attrs: {
+        resourceType: "product",
+        id: "gid://shopify/Product/100000000001",
+        title: "Fixture Product",
+        handle: "fixture-product",
+        image: "https://cdn.shopify.com/s/files/fixture/product.png"
+      }
     }
   ]
+};
+
+const demoResources: Record<ResourceReference["resourceType"], ResourceReference> = {
+  product: {
+    resourceType: "product",
+    id: "gid://shopify/Product/100000000001",
+    title: "Fixture Product",
+    handle: "fixture-product",
+    image: "https://cdn.shopify.com/s/files/fixture/product.png"
+  },
+  collection: {
+    resourceType: "collection",
+    id: "gid://shopify/Collection/200000000002",
+    title: "Fixture Collection",
+    handle: "fixture-collection",
+    image: "https://cdn.shopify.com/s/files/fixture/collection.png"
+  },
+  variant: {
+    resourceType: "variant",
+    id: "gid://shopify/ProductVariant/300000000003",
+    title: "Fixture Variant",
+    handle: "fixture-variant",
+    image: "https://cdn.shopify.com/s/files/fixture/variant.png"
+  }
+};
+
+const mockResourceProvider: ResourceProvider = {
+  async selectResource({ resourceType }: ResourceSelectionOptions) {
+    return demoResources[resourceType];
+  }
 };
 
 export default function DemoPage() {
@@ -149,6 +197,7 @@ export default function DemoPage() {
                       placeholder="Write Shopify product content"
                       onChange={setContent}
                       onUploadImage={uploadToShopify}
+                      resourceProvider={mockResourceProvider}
                     />
                   </BlockStack>
                 </Card>

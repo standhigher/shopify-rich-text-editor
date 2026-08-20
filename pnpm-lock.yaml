@@ -23,6 +23,9 @@ importers:
       '@shopify/polaris':
         specifier: ^12.0.0
         version: 12.27.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@standhigher/shopify-rich-text-core':
+        specifier: workspace:*
+        version: link:../../packages/rich-text-core
       '@standhigher/shopify-rich-text-editor':
         specifier: workspace:*
         version: link:../../packages/rich-text-editor

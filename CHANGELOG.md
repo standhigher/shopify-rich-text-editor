@@ -21,6 +21,20 @@ This project follows semantic versioning for the published npm packages:
 - Existing editor usage keeps the default 0.3.x extensions and now accepts optional `extensionContracts`.
 - Server validation derives its node and mark allowlist from the registered server extensions.
 
+## Next 0.5.x
+
+### Added
+
+- Added the dependency-free `ResourceProvider` contract for Product, Collection, and Variant selection.
+- Added Shopify Resource Node support with stable GID validation, limited display snapshots, unresolved-resource rendering, and cancellation-safe insertion.
+- Added safe Shopify HTML resource rendering with optional server-side URL mapping and final sanitization.
+- Added脱敏 Shopify capability fixtures, a local Mock Provider demo, and integration guidance.
+
+### Constraints
+
+- Shopify `rich_text_field` JSON import/export remains experimental and is not a stable 0.5.x API.
+- The editor does not import App Bridge, Shopify Admin SDK, or expose Admin API tokens.
+
 ## 0.3.0 - 2026-08-20
 
 ### Added

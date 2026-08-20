@@ -19,6 +19,7 @@
   "dependencies": {
     "@standhigher/shopify-rich-text-editor": "workspace:*",
     "@standhigher/shopify-rich-text-server": "workspace:*",
+    "@standhigher/shopify-rich-text-core": "workspace:*",
     "@shopify/polaris": "^12.0.0",
     "@tiptap/core": "^3.0.0"
   }
@@ -79,6 +80,37 @@ export function ProductDescriptionEditor() {
   );
 }
 ```
+
+## 五点一、接入 Shopify Resource Provider（0.5.x）
+
+资源选择由宿主 App 实现并注入，编辑器包不直接依赖 App Bridge、Resource Picker 或 Shopify Admin SDK：
+
+```tsx
+import { RichTextEditor, type ResourceProvider } from "@standhigher/shopify-rich-text-editor";
+
+const resourceProvider: ResourceProvider = {
+  async selectResource({ resourceType, selectionLimit }) {
+    const picked = await openHostResourcePicker({ resourceType, selectionLimit });
+    if (!picked) return null;
+
+    return {
+      resourceType,
+      id: picked.id,
+      title: picked.title,
+      handle: picked.handle,
+      image: picked.image
+    };
+  }
+};
+
+<RichTextEditor
+  value={content}
+  onChange={setContent}
+  resourceProvider={resourceProvider}
+/>;
+```
+
+Provider 只返回稳定 GID 和有限展示快照。取消时返回 `null`，不会产生空 Resource Node；权限、网络和资源不存在分别使用 `PERMISSION_DENIED`、`NETWORK_ERROR`、`RESOURCE_NOT_FOUND`。Token、店铺归属和权限校验必须留在业务层或服务端。
 
 注意：
 
@@ -200,6 +232,17 @@ export async function POST(request: Request) {
   });
 }
 ```
+
+资源 HTML 可以由服务端业务层提供 URL 映射，但不要把 Admin URL 或店铺域名写入文档：
+
+```ts
+const html = renderShopifyHtml(document, {
+  resourceUrlBuilder: (resource) =>
+    resource.handle ? `/${resource.resourceType}s/${resource.handle}` : undefined
+});
+```
+
+没有安全 URL 时输出标题文本；非法 URL 自动降级，最终结果仍经过 Sanitizer。Shopify `rich_text_field` JSON 双向转换在 0.5.x 仍是实验/未承诺能力。
 
 前端调用：
 
