@@ -22,6 +22,7 @@ export type {
 } from "./providers";
 export {
   CURRENT_RICH_TEXT_SCHEMA_VERSION,
+  createRichTextDocument,
   migrateDocument,
   MigrationError,
   RICH_TEXT_MIGRATIONS

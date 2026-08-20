@@ -12,6 +12,7 @@
     "baseUrl": ".",
     "paths": {
       "@standhigher/shopify-rich-text-core": ["packages/rich-text-core/src/index.ts"],
+      "@standhigher/shopify-rich-text-core/experimental": ["packages/rich-text-core/src/experimental.ts"],
       "@standhigher/shopify-rich-text-editor": ["packages/rich-text-editor/src/index.ts"],
       "@standhigher/shopify-rich-text-server": ["packages/rich-text-server/src/index.ts"]
     },

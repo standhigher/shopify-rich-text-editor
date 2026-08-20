@@ -1,4 +1,4 @@
-import type { RichTextDocument } from "./types";
+import { RICH_TEXT_PROTOCOL_VERSION, type RichTextDocument, type RichTextNode } from "./types";
 
 export const CURRENT_RICH_TEXT_SCHEMA_VERSION = "2026-08" as const;
 
@@ -20,6 +20,22 @@ export const RICH_TEXT_MIGRATIONS = [
     })
   }
 ] as const satisfies readonly Migration[];
+
+/**
+ * Wraps editor JSON content in the stable persisted document envelope.
+ * The input is cloned so callers can safely continue using editor state.
+ */
+export function createRichTextDocument(
+  content: RichTextNode,
+  options: { plainText?: string; schemaVersion?: string } = {}
+): RichTextDocument {
+  return {
+    version: RICH_TEXT_PROTOCOL_VERSION,
+    schemaVersion: options.schemaVersion ?? CURRENT_RICH_TEXT_SCHEMA_VERSION,
+    content: cloneNode(content),
+    ...(options.plainText === undefined ? {} : { plainText: options.plainText })
+  };
+}
 
 export class MigrationError extends Error {
   readonly code: MigrationErrorCode;
@@ -98,4 +114,8 @@ function assertAcyclic(migrations: readonly Migration[]): void {
 
 function cloneDocument(document: RichTextDocument): RichTextDocument {
   return JSON.parse(JSON.stringify(document)) as RichTextDocument;
+}
+
+function cloneNode(node: RichTextNode): RichTextNode {
+  return JSON.parse(JSON.stringify(node)) as RichTextNode;
 }

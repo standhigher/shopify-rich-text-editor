@@ -1,10 +1,13 @@
+/** @experimental Shopify Resource support is not part of the frozen 1.0 core protocol. */
 export type ResourceType = "product" | "collection" | "variant";
 
+/** @experimental Provided by the host Shopify app; the editor does not own picker access. */
 export interface ResourceSelectionOptions {
   resourceType: ResourceType;
   selectionLimit?: 1;
 }
 
+/** @experimental Resource snapshots are limited to display-safe fields. */
 export interface ResourceReference {
   resourceType: ResourceType;
   id: string;
@@ -13,6 +16,7 @@ export interface ResourceReference {
   image?: string;
 }
 
+/** @experimental Inject a host-owned resource picker implementation. */
 export interface ResourceProvider {
   selectResource(options: ResourceSelectionOptions): Promise<ResourceReference | null>;
 }

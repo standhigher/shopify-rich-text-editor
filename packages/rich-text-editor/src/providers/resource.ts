@@ -9,6 +9,7 @@ import {
 
 export const SHOPIFY_RESOURCE_PROVIDER_EXTENSION_NAME = "shopifyResourceProvider";
 
+/** @experimental Shopify Resource UI is opt-in and may evolve independently of the stable editor API. */
 export function createResourceProviderExtension(provider: ResourceProvider) {
   return Extension.create({
     name: SHOPIFY_RESOURCE_PROVIDER_EXTENSION_NAME,
@@ -18,6 +19,7 @@ export function createResourceProviderExtension(provider: ResourceProvider) {
   });
 }
 
+/** @experimental Select a resource through the host-provided picker. */
 export async function selectResource(
   provider: ResourceProvider,
   options: ResourceSelectionOptions
@@ -38,6 +40,7 @@ export async function selectResource(
   }
 }
 
+/** @experimental Create a structured resource-provider error. */
 export function createResourceProviderError(
   code: ResourceProviderErrorCode,
   message: string,

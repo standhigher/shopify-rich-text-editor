@@ -1,6 +1,6 @@
 {
   "name": "@standhigher/shopify-rich-text-core",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Dependency-free contracts and registries for Shopify rich text extensions.",
   "license": "MIT",
@@ -10,6 +10,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./experimental": {
+      "types": "./dist/experimental.d.ts",
+      "import": "./dist/experimental.js"
     }
   },
   "files": [
