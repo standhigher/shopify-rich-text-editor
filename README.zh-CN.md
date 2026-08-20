@@ -19,6 +19,7 @@ Shopify Rich Text Editor 是面向 Shopify App 的通用富文本编辑器工具
 - API 文档：[前端包 README](packages/rich-text-editor/README.md)、[服务端包 README](packages/rich-text-server/README.md)
 - 接入文档：[Shopify App 快速接入指南](docs/business-shopify-app-integration.md)
 - 维护文档：[开发维护指南](docs/development-and-architecture.md)
+- 演进规划：[版本演进规划](docs/evolution-roadmap.md)
 - 更新日志：[CHANGELOG.md](CHANGELOG.md)
 
 ## 安装

@@ -19,6 +19,7 @@ Shopify Rich Text Editor is a reusable rich text editing toolkit for Shopify App
 - API docs: [editor package README](packages/rich-text-editor/README.md), [server package README](packages/rich-text-server/README.md)
 - Usage docs: [Shopify App integration guide](docs/business-shopify-app-integration.md)
 - Maintenance docs: [development and architecture guide](docs/development-and-architecture.md)
+- Evolution roadmap: [version evolution roadmap](docs/evolution-roadmap.md)
 - Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 ## Installation
