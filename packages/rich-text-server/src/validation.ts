@@ -4,13 +4,7 @@ import { z } from "zod";
 import type { RichTextDocument, RichTextValidationLimits } from "./types";
 import { RichTextValidationError } from "./errors";
 import { RICH_TEXT_VALIDATION_LIMITS } from "./types";
-
-const allowedNodes = new Set([
-  "doc", "paragraph", "text", "heading", "blockquote", "bulletList",
-  "orderedList", "listItem", "codeBlock", "horizontalRule", "hardBreak", "image"
-]);
-
-const allowedMarks = new Set(["bold", "code", "italic", "strike", "underline", "link"]);
+import { createServerExtensionRegistry, type ServerExtensionRegistry } from "./extensions/registry";
 
 const jsonContentSchema: z.ZodType<JSONContent> = z.lazy(() =>
   z
@@ -42,7 +36,8 @@ const richTextDocumentSchema = z.object({
 
 export function validateRichTextDocument(
   value: unknown,
-  limits: Partial<RichTextValidationLimits> = {}
+  limits: Partial<RichTextValidationLimits> = {},
+  registry: ServerExtensionRegistry = createServerExtensionRegistry()
 ): RichTextDocument {
   const result = richTextDocumentSchema.safeParse(value);
 
@@ -62,7 +57,7 @@ export function validateRichTextDocument(
   }
 
   const stats = { textLength: 0, nodeCount: 0, attrsCount: 0 };
-  validateNode(result.data.content, 0, "content", stats, validationLimits);
+  validateNode(result.data.content, 0, "content", stats, validationLimits, registry);
 
   if (stats.textLength > validationLimits.maxTextLength) {
     throw new RichTextValidationError(
@@ -79,7 +74,8 @@ function validateNode(
   depth: number,
   path: string,
   stats: { textLength: number; nodeCount: number; attrsCount: number },
-  limits: RichTextValidationLimits
+  limits: RichTextValidationLimits,
+  registry: ServerExtensionRegistry
 ): void {
   stats.nodeCount += 1;
   if (stats.nodeCount > limits.maxNodeCount) {
@@ -107,7 +103,7 @@ function validateNode(
     );
   }
 
-  if (!node.type || !allowedNodes.has(node.type)) {
+  if (!node.type || !registry.nodeNames.has(node.type)) {
     throw new RichTextValidationError("UNKNOWN_NODE", `Unknown node type: ${node.type ?? "<missing>"}`, path);
   }
 
@@ -129,7 +125,7 @@ function validateNode(
       );
     }
 
-    if (!allowedMarks.has(mark.type)) {
+    if (!registry.markNames.has(mark.type)) {
       throw new RichTextValidationError("UNKNOWN_MARK", `Unknown mark type: ${mark.type}`, `${path}.marks[${index}]`);
     }
 
@@ -139,7 +135,7 @@ function validateNode(
   });
 
   node.content?.forEach((child, index) => {
-    validateNode(child, depth + 1, `${path}.content[${index}]`, stats, limits);
+    validateNode(child, depth + 1, `${path}.content[${index}]`, stats, limits, registry);
   });
 }
 

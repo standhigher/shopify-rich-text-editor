@@ -1,4 +1,6 @@
 export { renderShopifyHtml } from "./channels/shopify.adapter";
+export { createServerExtensionRegistry } from "./extensions/registry";
+export type { ServerExtension, ServerExtensionRegistry } from "./extensions/registry";
 export { richTextJsonToHtml, richTextJsonToPlainText } from "./serializers";
 export { sanitizeRichTextHtml } from "./security/sanitize-html";
 export { RICH_TEXT_VALIDATION_LIMITS } from "./types";

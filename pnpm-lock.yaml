@@ -121,6 +121,9 @@ importers:
 
   packages/rich-text-server:
     dependencies:
+      '@standhigher/shopify-rich-text-core':
+        specifier: workspace:*
+        version: link:../rich-text-core
       '@tiptap/core':
         specifier: ^3.0.0
         version: 3.29.2(@tiptap/pm@3.29.2)
