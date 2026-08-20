@@ -5,6 +5,15 @@ export type { ShopifyResourceRenderOptions } from "./channels/resource-renderer"
 export { createServerExtensionRegistry } from "./extensions/registry";
 export type { ServerExtension, ServerExtensionRegistry } from "./extensions/registry";
 export { richTextJsonToHtml, richTextJsonToPlainText } from "./serializers";
+export { importStandardHtml, normalizeStandardHtml } from "./import";
+export type {
+  HtmlImportError,
+  HtmlImportErrorCode,
+  HtmlImportFailure,
+  HtmlImportResult,
+  HtmlImportSuccess,
+  NormalizedHtmlImport
+} from "./import";
 export { sanitizeRichTextHtml } from "./security/sanitize-html";
 export { RICH_TEXT_VALIDATION_LIMITS } from "./types";
 export type { RichTextDocument, RichTextValidationLimits } from "./types";
