@@ -32,7 +32,7 @@
     "build": "pnpm -r build",
     "build-storybook": "pnpm --filter @standhigher/shopify-rich-text-editor-demo build",
     "lint": "pnpm -r typecheck",
-    "pack:dry-run": "pnpm --filter @standhigher/shopify-rich-text-editor exec npm pack --dry-run && pnpm --filter @standhigher/shopify-rich-text-server exec npm pack --dry-run",
+    "pack:dry-run": "pnpm --filter @standhigher/shopify-rich-text-core exec npm pack --dry-run && pnpm --filter @standhigher/shopify-rich-text-editor exec npm pack --dry-run && pnpm --filter @standhigher/shopify-rich-text-server exec npm pack --dry-run",
     "release:check": "pnpm -r typecheck && pnpm test && pnpm build && pnpm pack:dry-run",
     "release:major": "npm version major --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor-demo version major --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor version major --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-server version major --no-git-tag-version",
     "release:minor": "npm version minor --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor-demo version minor --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-editor version minor --no-git-tag-version && pnpm --filter @standhigher/shopify-rich-text-server version minor --no-git-tag-version",
