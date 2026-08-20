@@ -26,18 +26,26 @@ apps/demo
   app/api/render-shopify/route.ts
 
 packages/rich-text-editor
+  src/create-editor.ts
   src/components/RichTextEditor.tsx
   src/components/RichTextToolbar.tsx
   src/components/EditorContentArea.tsx
   src/extensions/base.ts
   src/styles.css
   src/types.ts
+  src/extensions/registry.ts
 
 packages/rich-text-server
+  src/extensions/registry.ts
   src/channels/shopify.adapter.ts
   src/security/sanitize-html.ts
   src/serializers.ts
   src/validation.ts
+
+packages/rich-text-core
+  src/types.ts
+  src/extensions.ts
+  src/migrations.ts
   src/types.ts
 ```
 
@@ -47,6 +55,7 @@ packages/rich-text-server
 |---|---|
 | `rich-text-editor` | 前端编辑器组件 |
 | `rich-text-server` | 服务端校验、HTML 生成、HTML 清洗 |
+| `rich-text-core` | 依赖无关的协议、扩展注册和迁移契约 |
 | `apps/demo` | 本地调试和接入示例 |
 
 ## 本地开发
@@ -130,6 +139,7 @@ updated_at
 
 ```ts
 export { RichTextEditor } from "./components/RichTextEditor";
+export { createEditorConfig, createEditorExtensionRegistry } from "./create-editor";
 export { RichTextError } from "./errors";
 export type { RichTextErrorCode } from "./errors";
 export type { RichTextEditorProps, ShopifyImageUploadResult } from "./types";
@@ -145,6 +155,7 @@ export interface RichTextEditorProps {
   readOnly?: boolean;
   disabled?: boolean;
   placeholder?: string;
+  extensionContracts?: readonly EditorExtension[];
   onUploadImage?: (file: File) => Promise<ShopifyImageUploadResult>;
 }
 ```
@@ -220,12 +231,35 @@ export interface ShopifyImageUploadResult {
 - 数据迁移
 - 测试
 
+### 0.4.x Extension Registry
+
+扩展契约只从 `@standhigher/shopify-rich-text-core` 的包根入口导入。Core 不依赖 React、Polaris、Next.js、Tiptap 或 Shopify SDK；编辑器和服务端分别把自己的运行时能力挂到同一个契约上。
+
+注册生命周期如下：
+
+```text
+Extension contracts
+    ↓
+依赖拓扑排序
+    ↓
+ID / Node / Mark 冲突检测
+    ↓
+客户端 Tiptap 初始化       服务端 Node/Mark 白名单
+                             ↓
+                      Serializer / Plain Text
+                             ↓
+                      Channel Adapter + Sanitizer
+```
+
+客户端注册不等于服务端注册。只在编辑器注册的 Node 不能通过服务端校验；服务端扩展必须明确提供 Tiptap Extension 或 Serializer。Migration 使用 `from`、`to` 和纯函数，执行前复制文档，缺失迁移、重复迁移和循环迁移都会返回稳定错误码。
+
 ## 服务端包
 
 入口：
 
 ```ts
 export { renderShopifyHtml } from "./channels/shopify.adapter";
+export { createServerExtensionRegistry } from "./extensions/registry";
 export { richTextJsonToHtml, richTextJsonToPlainText } from "./serializers";
 export { sanitizeRichTextHtml } from "./security/sanitize-html";
 export { RICH_TEXT_VALIDATION_LIMITS } from "./types";

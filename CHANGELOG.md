@@ -7,6 +7,20 @@ This project follows semantic versioning for the published npm packages:
 - `@standhigher/shopify-rich-text-editor`
 - `@standhigher/shopify-rich-text-server`
 
+## Unreleased - 0.4.x Extension Contract
+
+### Added
+
+- Added the dependency-free `@standhigher/shopify-rich-text-core` package for shared document, error, extension, and migration contracts.
+- Added deterministic extension dependency resolution and structured conflict errors.
+- Added editor and server Extension Registries with custom serializer support.
+- Added pure document migration helpers with missing, duplicate, and cycle detection.
+
+### Changed
+
+- Existing editor usage keeps the default 0.3.x extensions and now accepts optional `extensionContracts`.
+- Server validation derives its node and mark allowlist from the registered server extensions.
+
 ## 0.3.0 - 2026-08-20
 
 ### Added

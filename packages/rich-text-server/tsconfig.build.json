@@ -1,6 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "paths": {
+      "@standhigher/shopify-rich-text-core": ["packages/rich-text-core/dist/index.d.ts"]
+    },
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
