@@ -1,3 +1,4 @@
+import React from "react";
 import { Node, mergeAttributes } from "@tiptap/core";
 import { NodeViewWrapper, ReactNodeViewRenderer, type NodeViewProps } from "@tiptap/react";
 import type { ResourceReference } from "@standhigher/shopify-rich-text-core";

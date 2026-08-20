@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
+import React, { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import {
   Bold,
   Heading,

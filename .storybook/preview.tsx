@@ -1,3 +1,4 @@
+import React from "react";
 import type { Preview } from "@storybook/react-vite";
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";

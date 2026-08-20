@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { EditorContent, type Editor } from "@tiptap/react";
 
 interface EditorContentAreaProps {
@@ -14,4 +15,3 @@ export function EditorContentArea({ editor, readOnly }: EditorContentAreaProps) 
     </div>
   );
 }
-
