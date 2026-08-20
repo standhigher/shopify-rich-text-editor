@@ -16,6 +16,7 @@ React rich text editor for Shopify Apps, built with Tiptap 3, Shopify Polaris, a
 - Usage docs: [Shopify App integration guide](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/business-shopify-app-integration.md)
 - API docs: [server package README](https://github.com/standhigher/shopify-rich-text-editor/blob/main/packages/rich-text-server/README.md)
 - Changelog: [CHANGELOG.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/CHANGELOG.md)
+- Compatibility matrix: [docs/api-compatibility-matrix.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/api-compatibility-matrix.md)
 
 ## Installation
 
@@ -84,7 +85,11 @@ export function ProductDescriptionEditor() {
 }
 ```
 
-## Shopify resource provider (0.5.x)
+## Shopify resource provider (experimental)
+
+Resource APIs are opt-in and experimental in 1.0. New integrations should import
+the provider types from `@standhigher/shopify-rich-text-editor/experimental`.
+The root type export remains available for 0.6.x source compatibility.
 
 Resource selection is injected by the host Shopify App. The editor does not import App Bridge, Shopify Admin SDK, or hold Admin API tokens.
 
@@ -159,6 +164,8 @@ export interface ShopifyImageUploadResult {
 | Shopify Polaris | `^12.0.0` |
 | Tiptap | `^3.0.0` |
 | TypeScript | `^5.8.2` |
+| Node.js | `>=22.0.0` |
+| Protocol / schema | `1` / `2026-08` |
 
 ## Editor states
 

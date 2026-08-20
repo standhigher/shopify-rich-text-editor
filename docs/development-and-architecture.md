@@ -114,6 +114,9 @@ export interface RichTextDocument {
 }
 ```
 
+编辑器输出仍为 Tiptap `JSONContent`。在进入持久化或服务端流程前，推荐使用
+`createRichTextDocument(content)` 创建协议数据包；这不会改变 0.6.x 的编辑器入口。
+
 字段说明：
 
 | 字段 | 说明 |
@@ -286,7 +289,7 @@ export { prepareRichTextDocument, validateRichTextDocument } from "./validation"
 
 禁止在 Client Component 中 import `rich-text-server`。
 
-### 0.6.x Content Lifecycle
+### 0.6.x Content Lifecycle / 1.0 Stable Boundary
 
 服务端推荐处理顺序固定为：
 

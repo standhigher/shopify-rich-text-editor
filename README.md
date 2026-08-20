@@ -20,6 +20,8 @@ Shopify Rich Text Editor is a reusable rich text editing toolkit for Shopify App
 - Usage docs: [Shopify App integration guide](docs/business-shopify-app-integration.md)
 - Maintenance docs: [development and architecture guide](docs/development-and-architecture.md)
 - Evolution roadmap: [version evolution roadmap](docs/evolution-roadmap.md)
+- 1.0 API matrix: [public API and compatibility matrix](docs/api-compatibility-matrix.md)
+- 1.0 migration: [migration guide](docs/migration-guide-1.0.md)
 - Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 ## Installation
@@ -63,6 +65,14 @@ export function ProductDescriptionEditor() {
 }
 ```
 
+At the server boundary, wrap the editor JSON in the persisted protocol envelope:
+
+```ts
+import { createRichTextDocument } from "@standhigher/shopify-rich-text-core";
+
+const document = createRichTextDocument(content);
+```
+
 Render and sanitize Shopify HTML on the server:
 
 ```ts
@@ -99,7 +109,9 @@ export async function POST(request: Request) {
 | Shopify Polaris | `^12.0.0` |
 | Tiptap | `^3.0.0` |
 | TypeScript | `^5.8.2` |
-| Node.js | 18+ recommended |
+| Node.js | `>=22.0.0` |
+| pnpm | `10.15.x` |
+| Protocol / schema | `1` / `2026-08` |
 
 ## Examples / Storybook / Demo
 
@@ -132,6 +144,8 @@ Check package contents before publishing:
 
 ```bash
 pnpm pack:dry-run
+pnpm pack:check
+pnpm performance:baseline
 ```
 
 ## Local Development
@@ -155,4 +169,4 @@ npm run build-storybook
 pnpm pack:dry-run
 ```
 
-See [docs/release.md](docs/release.md) for npm registry, web auth, dry-run, tag, and dist-tag guidance.
+See [docs/release.md](docs/release.md) for npm registry, web auth, dry-run, tag, dist-tag, and rollback guidance.

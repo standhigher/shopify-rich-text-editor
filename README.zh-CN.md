@@ -20,6 +20,8 @@ Shopify Rich Text Editor 是面向 Shopify App 的通用富文本编辑器工具
 - 接入文档：[Shopify App 快速接入指南](docs/business-shopify-app-integration.md)
 - 维护文档：[开发维护指南](docs/development-and-architecture.md)
 - 演进规划：[版本演进规划](docs/evolution-roadmap.md)
+- 1.0 API 矩阵：[公共 API 与兼容矩阵](docs/api-compatibility-matrix.md)
+- 1.0 迁移：[迁移指南](docs/migration-guide-1.0.md)
 - 更新日志：[CHANGELOG.md](CHANGELOG.md)
 
 ## 安装
@@ -63,6 +65,14 @@ export function ProductDescriptionEditor() {
 }
 ```
 
+在服务端边界，把编辑器 JSON 封装为持久化协议数据包：
+
+```ts
+import { createRichTextDocument } from "@standhigher/shopify-rich-text-core";
+
+const document = createRichTextDocument(content);
+```
+
 服务端渲染 Shopify HTML：
 
 ```ts
@@ -99,7 +109,9 @@ export async function POST(request: Request) {
 | Shopify Polaris | `^12.0.0` |
 | Tiptap | `^3.0.0` |
 | TypeScript | `^5.8.2` |
-| Node.js | 建议 18+ |
+| Node.js | `>=22.0.0` |
+| pnpm | `10.15.x` |
+| 协议 / Schema | `1` / `2026-08` |
 
 ## Demo / Storybook
 
@@ -132,6 +144,8 @@ npm 包仅发布：
 
 ```bash
 pnpm pack:dry-run
+pnpm pack:check
+pnpm performance:baseline
 ```
 
 ## 本地开发

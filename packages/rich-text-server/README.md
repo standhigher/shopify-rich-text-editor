@@ -15,6 +15,7 @@ Server utilities for validating Tiptap JSON, sanitizing rich text HTML, and rend
 - Usage docs: [Shopify App integration guide](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/business-shopify-app-integration.md)
 - Editor package: [@standhigher/shopify-rich-text-editor](https://www.npmjs.com/package/@standhigher/shopify-rich-text-editor)
 - Changelog: [CHANGELOG.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/CHANGELOG.md)
+- Compatibility matrix: [docs/api-compatibility-matrix.md](https://github.com/standhigher/shopify-rich-text-editor/blob/main/docs/api-compatibility-matrix.md)
 
 ## Installation
 
@@ -75,7 +76,10 @@ Word HTML, Google Docs HTML, complex inline styles, forms, iframes, scripts, and
 
 `validateRichTextDocument()` and `processRichText()` migrate documents from published schema versions to `CURRENT_RICH_TEXT_SCHEMA_VERSION` before final schema validation. Migration failure is recoverable: callers should keep the original stored document, report the structured error, and avoid overwriting cached HTML or persisted JSON.
 
-## Shopify resource rendering (0.5.x)
+## Shopify resource rendering (experimental)
+
+Shopify Resource rendering is opt-in and experimental in 1.0. Resource fields
+must remain limited to stable GIDs and display-safe snapshots.
 
 Product, Collection, and Variant references are validated by their stable Shopify GID. The server persists only `resourceType`, `id`, and optional `title`, `handle`, and `image` snapshot fields. Internal API responses, tokens, permissions, and provider-specific fields are rejected.
 
@@ -140,7 +144,8 @@ Keep the client and server contracts in the same application module or registry 
 
 | Package | Supported |
 | --- | --- |
-| Node.js | 18+ recommended |
+| Node.js | `>=22.0.0` |
+| pnpm | `10.15.x` |
 | Tiptap | `^3.0.0` |
 | TypeScript | `^5.8.2` |
 

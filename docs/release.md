@@ -1,6 +1,6 @@
 # Release Guide
 
-This guide covers publishing:
+This guide covers preparing and publishing:
 
 - `@standhigher/shopify-rich-text-editor`
 - `@standhigher/shopify-rich-text-server`
@@ -60,6 +60,10 @@ Use semantic versioning:
 - minor: backward-compatible features or documentation/release improvements
 - major: breaking public API changes
 
+The 1.0 release line uses Node.js `>=22.0.0`, pnpm `10.15.x`, and package
+version `1.0.0`. The implementation branch runs every local gate but does not
+publish to npm.
+
 ```bash
 pnpm release:patch
 pnpm release:minor
@@ -72,6 +76,7 @@ Inspect package contents before publishing:
 
 ```bash
 pnpm pack:dry-run
+pnpm pack:check
 ```
 
 For a package-level npm dry-run:
@@ -105,6 +110,11 @@ npm dist-tag add @standhigher/shopify-rich-text-server@0.4.0 latest
 pnpm release:publish
 ```
 
+For a 1.0 candidate, publish a prerelease with `--tag next`, verify clean-project
+installation and imports, then move `latest` only after the merged main branch
+passes `pnpm release:check`. Never publish directly from an unmerged feature
+branch.
+
 ## Git Tags
 
 After a successful publish:
@@ -127,3 +137,14 @@ git push origin <branch> --tags
 - [ ] `npm run build` passes.
 - [ ] `npm run build-storybook` passes.
 - [ ] `npm pack --dry-run --registry=https://registry.npmjs.org/` inspected for both published packages.
+- [ ] `pnpm pack:check` confirms no tests, fixtures, demos, source, credentials, or Storybook files are included.
+- [ ] A clean temporary project imports the Editor root, Editor CSS, Core root, and Server root.
+- [ ] Migration failure rollback preserves original JSON and cached HTML.
+
+## Rollback
+
+If a publication or installation check fails, stop the release and leave the
+existing `latest` dist-tag unchanged. Fix the candidate and publish a new
+prerelease or patch. If a bad version has already been published, move the
+dist-tag back to the last verified version and keep all persisted documents and
+migration history intact.

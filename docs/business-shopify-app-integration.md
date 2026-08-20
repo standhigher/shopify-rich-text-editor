@@ -26,7 +26,7 @@
 }
 ```
 
-如果业务项目不在同一个 monorepo，改用 npm 版本号，例如 `^0.2.0`。
+如果业务项目不在同一个 monorepo，改用 npm 版本号，例如 `^1.0.0`。
 
 ## 三、引入样式
 
@@ -81,12 +81,13 @@ export function ProductDescriptionEditor() {
 }
 ```
 
-## 五点一、接入 Shopify Resource Provider（0.5.x）
+## 五点一、接入 Shopify Resource Provider（实验 API）
 
 资源选择由宿主 App 实现并注入，编辑器包不直接依赖 App Bridge、Resource Picker 或 Shopify Admin SDK：
 
 ```tsx
-import { RichTextEditor, type ResourceProvider } from "@standhigher/shopify-rich-text-editor";
+import { RichTextEditor } from "@standhigher/shopify-rich-text-editor";
+import type { ResourceProvider } from "@standhigher/shopify-rich-text-editor/experimental";
 
 const resourceProvider: ResourceProvider = {
   async selectResource({ resourceType, selectionLimit }) {
@@ -110,6 +111,8 @@ const resourceProvider: ResourceProvider = {
 />;
 ```
 
+Resource Provider 和 Resource Node 在 1.0 仍标记为实验 API；它们不属于冻结的核心协议承诺。
+
 Provider 只返回稳定 GID 和有限展示快照。取消时返回 `null`，不会产生空 Resource Node；权限、网络和资源不存在分别使用 `PERMISSION_DENIED`、`NETWORK_ERROR`、`RESOURCE_NOT_FOUND`。Token、店铺归属和权限校验必须留在业务层或服务端。
 
 注意：
@@ -125,11 +128,9 @@ Provider 只返回稳定 GID 和有限展示快照。取消时返回 `null`，�
 提交给服务端：
 
 ```ts
-{
-  version: 1,
-  schemaVersion: "2026-08",
-  content
-}
+import { createRichTextDocument } from "@standhigher/shopify-rich-text-core";
+
+const document = createRichTextDocument(content);
 ```
 
 完整结构：

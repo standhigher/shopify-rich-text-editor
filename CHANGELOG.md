@@ -8,6 +8,27 @@ This project follows semantic versioning for the published npm packages:
 - `@standhigher/shopify-rich-text-core`
 - `@standhigher/shopify-rich-text-server`
 
+## 1.0.0 - 2026-08-20
+
+### Added
+
+- Frozen the stable Core, Editor, and Server root API surface and published the compatibility matrix.
+- Added `createRichTextDocument()` for the explicit `JSONContent` to `RichTextDocument` persistence boundary.
+- Added named experimental entry points for Shopify Resource APIs while retaining 0.6.x root compatibility exports.
+- Added cross-package lifecycle, security fixture, compatibility, and 10KB/50KB/100KB performance regression tests.
+- Added package tarball allowlist checks and a release gate that runs typecheck, tests, build, dry-run, and artifact validation.
+- Added the 1.0 migration guide and release verification record template.
+
+### Changed
+
+- Published package manifests now target `1.0.0`; npm publication is intentionally deferred to the post-merge release step.
+- Node.js and pnpm support are documented as Node `>=22.0.0` and pnpm `10.15.x`.
+
+### Constraints
+
+- Shopify Resource Provider/Node APIs remain experimental.
+- Variables, AI, arbitrary HTML round-tripping, multi-channel adapters, Admin token management, and real-time collaboration are not 1.0 commitments.
+
 ## 0.6.0 - 2026-08-20
 
 ### Added
